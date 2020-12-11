@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}Overview}{1}{section.1}
+\contentsline {section}{\numberline {2}Develop and debug your experiment locally}{1}{section.2}
+\contentsline {section}{\numberline {3}Sandbox a HIT}{1}{section.3}
+\contentsline {section}{\numberline {4}Obtain and check sandbox results}{3}{section.4}
+\contentsline {section}{\numberline {5}Getting more out of your YAML configuration file}{4}{section.5}
+\contentsline {subsection}{\numberline {5.1}One YAML file for many HITs (and lists)}{4}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Avoiding the MTurk fee for 10 or more assignments}{5}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Preventing unwanted subjects from taking your experiment}{6}{subsection.5.3}
+\contentsline {section}{\numberline {6}Going live!}{7}{section.6}
+\contentsline {subsection}{\numberline {6.1}Getting your results}{8}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Approving (paying) workers}{8}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Blocking workers from future experiments}{9}{subsection.6.3}

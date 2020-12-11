@@ -1,0 +1,3 @@
+FillerType|TrialType|Word|Target|Visual1|Visual2|Onset|Offset|Contrast|Phase|final_stop|Left/Right|Order|Tokenname|CorrectAnswer|Speaker|Filename
+|CR|but|but|bud|but|stop|stop|offset|test1|t|1|1|but|right|M4|M4_CR_70dB_but
+R|FL|rum|rum|rum|run|liquid|nasal|offset|test1||0|2|rum2|left|M4|M4_FL_70dB_rum2

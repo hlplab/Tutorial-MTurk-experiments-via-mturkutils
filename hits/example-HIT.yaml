@@ -1,0 +1,38 @@
+---
+title: Example HIT
+description: A sample speech perception experiment and survey.
+keywords: psychology,experiment,speech
+reward: 0.01
+assignments: 1
+######################################
+## HIT Timing Properties
+######################################
+
+# this Assignment Duration value is 60 * 60 = 1 hour
+assignmentduration: 3600
+
+# this HIT Lifetime value is 60*60*24*5 = 5 days
+hitlifetime: 172800
+
+# this Auto Approval period is 60*60*24*15 = 15 days
+autoapprovaldelay: 1296000
+
+#There are many different qualifications that can be used. Here are two samples
+qualifications:
+  builtin:
+    # this is a built-in qualification -- user must have > 95% approval rate
+    - qualification: PercentAssignmentsApprovedRequirement
+      comparator: GreaterThan
+      value: 95
+      private: true
+    # this is a built-in qualification -- user must be in the United States
+    - qualification: LocaleRequirement
+      comparator: EqualTo
+      locale: US
+      private: false
+
+question:
+  url: https://www.hlp.rochester.edu/mturk/lliu/nrtmodule/assignment1.html?condition={condition}
+  height: 750
+  input:
+    - condition: mock_experiment

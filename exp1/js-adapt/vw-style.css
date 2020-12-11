@@ -1,0 +1,96 @@
+div#visworldContainer {
+    width: 600px;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #dddddd;
+    position: relative;
+    display: none;
+}
+
+div#visworldContainer > div#readyWaitContainer {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    margin-top: -40px;
+    top: 50%;
+    left: 50%;
+}
+
+div#visworldContainer > div#readyWaitContainer > img {
+    height: 80px;
+    width: 80px;
+}
+
+/* positioning of items in the visual world for the current trial:
+ * for all elements: position: absolute in a position: relative container means
+ * position is relative to container 
+ */
+div#visworldContainer > img.vw_trialimage {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+}
+/* top-left item */
+[vw_pos="0"], [vw_pos='topleft'] {
+    top: 0;
+    left: 0;
+}
+/* top-right */
+[vw_pos="1"], [vw_pos='topright'] {
+    top:0;
+    right:0;
+}
+/* bottom-left */
+[vw_pos="2"], [vw_pos='bottomleft'] {
+    bottom:0;
+    left:0;
+}
+/* bottom-right */
+[vw_pos="3"], [vw_pos='bottomright'] {
+    bottom: 0;
+    right: 0;
+}
+
+[vw_pos='left'] {
+    margin-top: -100px;
+    top: 50%;
+    left: 0;
+}
+
+[vw_pos='right'] {
+    margin-top: -100px;
+    top: 50%;
+    right: 0;
+}
+
+/* styling of familiarization images */
+div#visworldContainer > img.familiarizationImage {
+    position: absolute;
+    margin-left: -125px;
+    margin-top: -125px;
+    left: 50%;
+    top: 50%;
+    z-index: 1000;
+}
+
+div#visworldContainer > div#familiarizationText {
+    position: absolute;
+    width: 250px;
+    margin-left: -125px;
+    left: 50%;
+    top: 66%;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 40pt;
+}
+
+div#visworldContainer > div#familiarizationInstructions {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 10%;
+    text-align: center;
+    font-size: 16pt;
+}

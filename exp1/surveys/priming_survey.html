@@ -1,0 +1,135 @@
+<div id="endForm" class="survey">
+    
+    <div class="question_section" id="audio_stall" style="display:visible">
+        <p name="audio_stall">Did any of the audio clips jump, stall, or skip during the experiment?</p>
+        <input type="radio" name="audio_stall" value="yes">Yes, very frequently.</input><br/>
+        <input type="radio" name="audio_stall" value="some">Yes, a handful of times.</input><br/>
+        <input type="radio" name="audio_stall" value="few">Yes, once or twice.</input><br/>
+        <input type="radio" name="audio_stall" value="no">No, they all played smoothly.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+
+    <div class="question_section" id="audio_type" style="display:none">
+        <p>What kind of audio equipment did you use for the experiment?</p>         
+        <input type="radio" name="audio_type" value="in-ear">In-ear headphones</input><br/>
+        <input type="radio" name="audio_type" value="over-ear">Over-the-ear headphones</input><br/>
+        <input type="radio" name="audio_type" value="computer speakers">Laptop speakers</input><br/>
+        <input type="radio" name="audio_type" value="external">External speakers</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+
+    <div class="question_section" id="voice_similarity" style="display:none">
+        <p name="accent_intro">In this experiment, we seek to understand how humans perceive different voices and
+        deal with speech that might sound different from what they're used to hearing. Please answer the following questions to the best of your abilities.</p></hr>
+
+        <p name="same_voice">How many male voices do you think you have heard?</p>
+        <input type="radio" name="same_voice" value="1">1</input><br/>
+        <input type="checkbox" name="diff_voice" value="1+">More than 1</input><br/>
+        
+        <p name="voice_similarity_rating">If you answered "1", then skip this part; if you answered "More than 1", please rate the similarity of the voices on a scale from 1 to 7: <p>1 being 'very different voices' and 7 being 'identical voice'.</p> </p>
+        <input type="radio" name="voice_similarity_rating" value="1">1</input>
+        <input type="radio" name="voice_similarity_rating" value="2">2</input>
+        <input type="radio" name="voice_similarity_rating" value="3">3</input>
+        <input type="radio" name="voice_similarity_rating" value="4">4</input>
+        <input type="radio" name="voice_similarity_rating" value="5">5</input>
+        <input type="radio" name="voice_similarity_rating" value="6">6</input>
+        <input type="radio" name="voice_similarity_rating" value="7">7</input>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+      </div>
+      
+    
+    <div class="question_section" id="language_background" style="display:none">
+        <p name="language_background">Please select the choice that best describes your language background.</p>
+        <input type="radio" name="language_background" value="monolingual">I speak American English only.</input><br/>
+        <input type="radio" name="language_background" value="other">I speak languages other than English proficiently.</input><br/>
+
+        <p name="language_background_free">Please provide us a few more details for your answer above. For example: "American English (Native), Italian (Proficient). I lived in Italy for 2 years".</p>
+        <textArea id="language_background_free" name="language_background_free" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+
+    <div class="question_section" id="parents_accent" style="display:none">
+        <p>Do your parents have a foreign accent when speaking English?</p>
+        <input type="radio" name="parents_accent" value="yes">Yes</input><br/>
+        <input type="radio" name="parents_accent" value="no">No</input><br/>
+        <input type="radio" name="parents_accent" value="noEnglish">They do not speak English.</input><br/>
+            
+        
+        <p name="comments">If your parents are not native English speakers (that is, they did not spend almost all of their time until the age of 7 speaking English), please specify what languages they speak below.</p>
+        <input type="text" placeholder="Mom" id="mom_accent_long" name="mom_accent_long" onkeypress="return isValidKey(event)"></textArea>
+        <input type="text" placeholder="Dad" id="dad_accent_long" name="dad_accent_long" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+
+    <div class="question_section" id="any_acc_hear" style="display:none">
+        <p>Evidence suggests that exposure to foreign accents may help you understand unfamiliar speech more easily. These accents can be English that is accented by other languages, such as French- or Japanese-accented English, but also include strong native dialects of English spoken elsewhere, such as Scotland and Australia.</p><hr />
+        <p name="any_accent_familiarity_frequency">How often do you hear talkers with any accent, whether in person or in movies/TV shows etc.?</p>
+        <input type="radio" name="any_accent_familiarity_frequency" value="all_time">A few times a day or more.</input><br/>
+        <input type="radio" name="any_accent_familiarity_frequency" value="day">Perhaps once a day.</input><br/>
+        <input type="radio" name="any_accent_familiarity_frequency" value="week">Perhaps a few times a week.</input><br/>
+        <input type="radio" name="any_accent_familiarity_frequency" value="month">Perhaps a few times a month.</input><br/>
+        <input type="radio" name="any_accent_familiarity_frequency" value="year">Perhaps a few times a year.</input><br/>
+        <input type="radio" name="any_accent_familiarity_frequency" value="never">I don't recall ever hearing foreign accents before.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="foreign_acc_type" style="display:none">
+        <p name="foreign_accent_familiarity_type">Which of the following best describes your experience with foreign-accented speakers? </p>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="many">I frequently interact with many different foreign-accented speakers.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="some">I frequently interact with a small number of foreign-accented speakers (for example, specific relatives, colleagues, friends, clients, etc.).</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="casual">I know a small number of foreign-accented speakers (for example, specific relatives, colleagues, friends, clients, etc.), but I don't talk to them very often.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="little">I don't interact with foreign-accented speakers much.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    
+    <div class="question_section" id="specific_language_background" style="display:none">
+        <p name="specific_language_background">What best describes your exposure to Mandarin Chinese or Cantonese? (select all that apply)</p>
+        <input type="checkbox" name="specific_language_background" value="native_and_should_be_excluded">I am a native speaker of these languages.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="fluent_not_native">I am fluent in Mandarin/Cantonese, but did not learn it starting  from a very young age.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="speak_some">I speak Mandarin/Cantonese somewhat well.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="parents_speak">My parents speak Mandarin/Cantonese.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="close_friend_speaks">A close friend speaks Mandarin/Cantonese.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="have_heard_spoken">I hear Mandarin/Cantonese spoken, but not by friends or family.</input><br/>
+        <input type="checkbox" name="specific_language_background" value="not_exposed_to">I have not been exposed to Mandarin/Cantonese to any significant degree.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="foreign_lang" style="display:none">
+        <p name="foreign_lang_familiarity_frequency">How often do you hear talkers speak other languages, whether in person or in movies, TV shows etc.?</p>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="all_time">A few times a day or more.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="day">Perhaps once a day.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="week">Perhaps a few times a week.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="month">Perhaps a few times a month.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="year">Perhaps a few times a year.</input><br/>
+        <input type="radio" name="foreign_lang_familiarity_frequency" value="never">I don't recall ever hearing foreign languages before.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    
+    <div class="question_section" id="dialect" style="display:none">
+        <p name="native_dialect">Which regional dialect of American English do you speak?</p>
+        <input type="radio" name="native_dialect" value="NE">New England English (ENE).</input><br/>
+        <input type="radio" name="native_dialect" value="MidAtlantic">Mid-Atlantic.</input><br/>
+        <input type="radio" name="native_dialect" value="North">North Central.</input><br/>
+        <input type="radio" name="native_dialect" value="South">Southern.</input><br/>
+        <input type="radio" name="native_dialect" value="Midland">Midland.</input><br/>
+        <input type="radio" name="native_dialect" value="West">Western.</input><br/>
+        <input type="radio" name="native_dialect" value="Nonnative">My first language is not English.</input><br/>
+        <img src="surveys/dialect_map.jpg" alt="dialect_map">
+        <p name="dialect_free">If none of the above describes your dialect, please specify below. For example, "I live in Puerto Rico" or "I have a Californian accent".</p>
+        <textArea id="dialect_free" name="dialect_free" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    
+  
+    <div class="question_section" id="comments" style="display:none">
+        <p name="comments">(Optional) Enter any other comments you might have, e.g. if you have any other comments about the task or the speech stimuli.</p>
+        <textArea id="comments" name="comments" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+</div>
+
+

@@ -1,0 +1,3 @@
+FillerType|TrialType|Word|Target|Visual1|Visual2|Onset|Offset|Contrast|Phase|final_stop|Left/Right|Order|Tokenname|CorrectAnswer|TrainSpeaker|Filename
+R|FL|beach|beach|beach|peach|stop|affricate|onset|training||0|1|BEACH|left|E14|E14_FL_70dB_beach
+|CR|aid|aid|aid|ate|vowel|stop|offset|training|d|0|2|AID|left|E14|E14_CR_70dB_aid

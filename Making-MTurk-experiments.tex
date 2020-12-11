@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{verbatim}
+\definecolor{shadecolor}{rgb}{.9, .9, .9}
+\usepackage{tcolorbox}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+            
+\newenvironment{code}%
+   {\par\noindent\adjustbox{margin=1ex,bgcolor=shadecolor,margin=0ex \medskipamount}\bgroup\minipage\linewidth\verbatim}%
+   {\endverbatim\endminipage\egroup}
+
+
+%\DeclareUrlCommand{\burl}{\def\UrlFont{\ttfamily\color{blue}}}
+
+\newcommand{\burl}[3][blue]{\href{#1}{\color{#2}{#3}}}%
+
+\title{Programming MTurk experiments via {\em jsadapt}}
+\author{Florian Jaeger with help from Linda Liu, Zach Burchill, Wednesday Bushong, and Xin Xie}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents 
+
+\section{Overview}
+
+Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} and {\em Conducting Mechanical Turk experiments}. This tutorial walks you through how to program your own experiment using {\em jsadapt}, which is a collection of Javascript programs originally written by Dave Kleinschmidt and then extended and modified by Linda Liu, Zach Burchill, Wednesday Bushong, Esteban Buz, Xin Xie, and others.
+
+
+%ADD LINK TO JSADAPT git
+
+
+\section{Making your own experiment}
+
+%current idea for workflow:
+%develop script and test on laptop (localhost; student): select condition, list, etc. through URL parameters
+%test on slate (florian upload:  test on students)
+%sandbox from slate (florian)
+% deploy from slate (florian)
+
+\subsection{What needs to be in the HTML file?}
+
+\begin{itemize}
+    \item A form element that posts the resuls to MTurk when the experiment is done. 
+    % ASK WEDNESDAY WHAT NEEDS TO GO IN HERE.
+    % What is obligatory, what is optional?
+    
+\begin{code}
+<form id="mturk_form" method="POST" action="https://www.mturk.com/mturk/externalSubmit">
+    <!-- some MTurk specific information -->
+    <textArea id="assignmentId" name="assignmentId" ></textArea><br />
+    <textArea id="practiceResp" name="practiceResp" ></textArea><br />
+    <input type="hidden" id="userAgent" name="userAgent" />
+                
+    <!-- hidden fields for the URL parameters that we want to be stored. -->            
+    <input type="hidden" id="label" name="label" />
+    <input type="hidden" id="condition" name="condition" />
+    <input type="hidden" id="reverse" name="reverse" />
+    <input type="hidden" id="reverse2" name="reverse2" />
+    <input type="hidden" id="list_num" name="list_num" />
+    <input id="submitButton" type="submit" name="Submit" value="Submit" />
+</form>
+\end{code}
+
+    \item A link to whatever Javascript code you're using. For example, the example experiment in this tutorial uses js-adapt, a collection 
+    of code originally written by Dave Kleinschmidt, and then extended by Linda Liu, Zach Burchill, Wednesday Bushong, and Xin Xie. That code 
+    provides object definitions for experiments, different types of blocks, stimulus lists, etc. These definitions can then be evokes to 
+    create the specific experiment, like the last line in the following example, in which experiment-A.js would contain the code for the 
+    experiment (code that references code in the other .js files).
+    
+\begin{code}
+<!-- general javascript, incl. general definitions of objects 
+     for experiment, block, and stimulus lists  //-->
+<script src="js-adapt/jquery-1.10.1.min.js" type="text/javascript" ></script>
+<script src="js-adapt/modernizr.min.js" type="text/javascript"></script>
+<script src="js-adapt/stimuli.js" type="text/javascript" ></script>
+<script src="js-adapt/labelingBlock.js" type="text/javascript" ></script>
+<script src="js-adapt/exposureBlock.js" type="text/javascript" ></script>
+<script src="js-adapt/experimentControl2.js" type="text/javascript" ></script>
+<script src="js-adapt/soundcheckBlock.js" type="text/javascript"></script>
+<script src="js-adapt/mturk_helpers.js" type="text/javascript"></script>
+<script src="js-adapt/progressBar.js" type="text/javascript"></script>
+<script src="js-adapt/logreg.js"  type="text/javascript"></script>
+<script src="js-adapt/utilities.js" type="text/javascript"></script>
+<script src="get_stim.js" type="text/javascript"></script>
+
+<!-- Here is where your experiment javascript file is specified -->
+<script src="experiment-A.js" type="text/javascript"></script>
+\end{code}
+
+    \item Any HTML objects references in the Javascript code. This includes, for example, various <div>s that the Javascript code will
+    fill with content at different points during the experiment. % ASK WEDNESDAY WHETHER THIS IS CORRECT.
+\end{itemize}
+
+
+
+\section{Example experiments using {\em jsadapt}}
+
+\begin{itemize}
+    \item The code for the unsupervised and supervised learning experiment in Kleinschmidt et. al (2015) \footnote{\href{https://mindmodeling.org/cogsci2015/papers/0200/paper0200.pdf}{https://mindmodeling.org/cogsci2015/papers/0200/paper0200.pdf}} can be cloned from \url{https://bitbucket.org/hlplab/nrtmodule/src/master/}. If you'd like to get a sense of a full version of the experiment, you can test it out at \url{https://www.hlp.rochester.edu/mturk/mtadapt/sup-unsup/}.
+    \item The code for a web-based version of the priming experiment from Xie \& Myers (2017) can be found at \url{https://github.com/xinxie-cogsci/Online-experiments}. If you'd like to get a sense of a full version of the experiment, you can test it out at, for example, \url{https://www.hlp.rochester.edu/mturk/xxie/io_perception/exp1/exp1_transcription.html?condition=experimental&speaker=M15&order=2&visual=1&block=2} (for information on the URL parameters, see the readme.md file in the github repository).
+    \item And here is a demo of a whole number of different paradigms available on request: \url{https://www.hlp.rochester.edu/mturk/lliu/demos/}.
+\end{itemize}
+
+
+\end{document}

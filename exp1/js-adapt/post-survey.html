@@ -1,0 +1,76 @@
+<div id="endForm" class="survey">
+    <div class="question_section" id="audio_stall" style="display:visible">
+        <p name="audio_stall">Did any of the audio clips jump, stall, or skip during the experiment?</p>
+        <input type="radio" name="audio_stall" value="yes">Yes, very frequently.</input><br/>
+        <input type="radio" name="audio_stall" value="some">Yes, a handful of times.</input><br/>
+        <input type="radio" name="audio_stall" value="few">Yes, once or twice.</input><br/>
+        <input type="radio" name="audio_stall" value="no">No, they all played smoothly.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="audio_type" style="display:none">
+        <p>What kind of audio equipment did you use for the experiment?</p>         
+        <input type="radio" name="audio_type" value="in-ear">In-ear headphones</input><br/>
+        <input type="radio" name="audio_type" value="over-ear">Over-the-ear headphones</input><br/>
+        <input type="radio" name="audio_type" value="computer speakers">Laptop Speakers</input><br/>
+        <input type="radio" name="audio_type" value="external">External Speakers</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="audio_qual" style="display:none">
+        <p>How does your audio equipment sound when you watch (high quality) music videos on YouTube, watch
+        movies on Netflix, or engage in other similar activities involving audio?</p>         
+        <input type="radio" name="audio_qual" value="poor">Poor (most words cannot be understood)</input><br/>
+        <input type="radio" name="audio_qual" value="okay">Okay (many sounds are distorted)</input><br/>
+        <input type="radio" name="audio_qual" value="good">Good (occasionally some minor distorted sounds)</input><br/>
+        <input type="radio" name="audio_qual" value="excellent">Excellent (crystal clear with no distorted sounds) </input><br/>
+        <input type="radio" name="audio_qual" value="professional">Professional quality</input><br/>
+        <input type="radio" name="audio_qual" value="unknown">I don't know or don't do any of the above.</input><br/>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="accent_familiarity_frequency" style="display:none">
+        <p name="accent_familiarity_frequency">You might have noticed that the last talker you heard had an accent. How often do you hear talkers with a similar accent, whether in person or in movies/TV shows etc.?</p>
+        <input type="radio" name="accent_familiarity_frequency" value="all_time">A few times a day or more.</input><br/>
+        <input type="radio" name="accent_familiarity_frequency" value="day">Perhaps once a day.</input><br/>
+        <input type="radio" name="accent_familiarity_frequency" value="week">Perhaps a few times a week.</input><br/>
+        <input type="radio" name="accent_familiarity_frequency" value="month">Perhaps a few times a month.</input><br/>
+        <input type="radio" name="accent_familiarity_frequency" value="year">Perhaps a few times a year.</input><br/>
+        <input type="radio" name="accent_familiarity_frequency" value="never">I don't recall ever hearing this accent before.</input><br/>
+
+        <p name="accent_familiarity_place"> If you somewhat regularly hear listeners with a similar accent, please tell us in what context you encounter these talkers (select all that apply)</p>
+        <input type="checkbox" name="accent_familiarity_place" value="in_my_family">In my family.</input><br/>
+        <input type="checkbox" name="accent_familiarity_place" value="among_my_close_friends">Among my close friends.</input><br/>
+        <input type="checkbox" name="accent_familiarity_place" value="at_work">At work.</input><br/>
+        <input type="checkbox" name="accent_familiarity_place" value="my_own_accent_sounds_like_that">My own accent sounds like that.</input><br/>
+        <input type="checkbox" name="accent_familiarity_place" value="in_movies_shows">In movies, shows, etc.</input><br/>
+        <input type="checkbox" name="accent_familiarity_place" value="never">I never heard this accent.</input><br/>
+        
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+
+    <div class="question_section" id="guess_accent" style="display:none">
+        <p name="guess_accent">Based on his accent, where do you think the last talker was from?</p>
+        <textArea id="guess_accent" name="guess_accent" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="language_background" style="display:none">
+        <p name="language_background">Please select the choice that best describes your language background.</p>
+        <input type="radio" name="language_background" value="monolingual">I speak American English only.</input><br/>
+        <input type="radio" name="language_background" value="chinese">I speak an East Asian language (e.g. Chinese, Korean).</input><br/>
+        <input type="radio" name="language_background" value="other">I speak other languages, but none from East Asia.</input><br/>
+        
+        <p name="language_background_free">Please provide us a few more details for your answer above. For example: American English (Native), Italian (Proficient). I lived in Italy for 2 years</p>
+        <textArea id="language_background_free" name="language_background_free" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+    
+    <div class="question_section" id="comments" style="display:none">
+        <p name="language_background">(Optional) Enter any other comments you might have. <i>For example: American English (Native), Italian (Proficient). I lived in Italy for 2 years</i></p>
+        <textArea id="comments" name="comments" onkeypress="return isValidKey(event)"></textArea>
+        <input type="button" id="SurveyContinue" name="Continue" value="Continue" class="moveOn"></input>
+    </div>
+</div>
+
+
