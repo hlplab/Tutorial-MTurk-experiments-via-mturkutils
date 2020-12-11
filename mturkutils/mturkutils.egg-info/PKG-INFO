@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: mturkutils
+Version: 0.1.0
+Summary: Scripts for working with Amazon Mechanical Turk
+Home-page: https://bitbucket.org/hlplab/mturkutils
+Author: Andrew Watts
+Author-email: andrew.watts@rochester.edu
+License: MIT
+Description: A set of scripts that somewhat replicate the original MTurk command line tools
+Keywords: aws,mturk
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7

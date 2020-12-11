@@ -1,0 +1,37 @@
+---
+title: Dummy experiment for testing 
+description: This is a dummy experiment for testing by our lab only
+keywords: dummy, test, dontdo, stop
+reward: 0.50
+assignments: 1
+
+# this Assignment Duration value is 60s * 35m = 2100 seconds
+assignmentduration: 2100
+
+# this HIT Lifetime value is 60*60*24*3 = 3 days
+hitlifetime: 259200
+
+# this Auto Approval period is 60*60*24*15 = 15 days
+autoapprovaldelay: 1296000
+
+qualifications:
+  builtin:
+    # this is a built-in qualification -- user must have > 95% approval rate
+    - qualification: PercentAssignmentsApprovedRequirement
+      comparator: GreaterThan
+      value: 95
+      private: true
+    # this is a built-in qualification -- user must be in the United States
+    - qualification: LocaleRequirement
+      comparator: EqualTo
+      locale: US
+      private: true
+  custom:
+    # Some custom qualification
+    - qualification: REPLACE_WITH_QUALIFICATION_ID
+      comparator: Exists
+      private: true
+
+question:
+  url: https://yoursite.tld/path/to/experiment/
+  height: 680
