@@ -120,13 +120,21 @@ Congratulations! By this point, you have successfully created a HIT (as a reques
 
 \begin{code}
 python getResults.boto3.py -s -f ../hits/example-HIT.success.yaml 
-  -r ../hits/example-HIT.results_120120.csv
+  -r ../hits/example-HIT.results_120120.tab
 \end{code}
 
-Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. \textbf{It's thus a good idea to include the date in the filename of the results file}, as in the code example in this section. Finally, if you uploaded the HIT(s) to sandbox under a specific profile, make sure to include that same profile name when you get the results (again by adding \texttt{-p profile\_name}).
+Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. Thus, \textbf{it's recommended to include the date in the filename of the results file}, as in the code example in this section. Finally, if you uploaded the HIT(s) to sandbox under a specific profile, make sure to include that same profile name when you get the results (again by adding \texttt{-p profile\_name}).
 
-  \item \textbf{Parse your results into an interpretable formate}. The output of \texttt{getResults} is a comma-separated values (csv) file, with one row per completed assignment, and one column for each variable that your experiment returned to Mechanical Turk. This is usually not the format we need for data visualization and analysis. For any non-trivial experiment, this csv file will also be hardly human readable. Since \textbf{we should carefully check whether the result file contains all the information that we will need later}, the next step is to parse this file into the format we need. This can be done in Python, R, or whatever scripting language you prefer.
+  \item \textbf{Parse your results into an interpretable formate}. The output of \texttt{getResults} is a tab-separated values (.tab) file, with one row per completed assignment, and one column for each variable that your experiment returned to Mechanical Turk. This is usually not the format we need for data visualization and analysis. For any non-trivial experiment, this .tab file will also be hardly human readable. Since \textbf{we should carefully check whether the result file contains all the information that we will need later}, the next step is to parse this file into the format we need. This can be done in Python, R, or whatever scripting language you prefer. In R, for example, \texttt{read\_tsv()} from the \texttt{readr} package (part of the \texttt{tidyverse} package) makes reading in tab-separated files easy, and the \texttt{dplyr} package (also part of the \texttt{tidyverse}) helps with wrangling the data into a suitable format.  For example:
+  
+\begin{code}
+library(tidyverse)
 
+d = read_tsv("PATH_TO_YOUR_RESULT_FILE/YOUR_RESULT_FILE.tab")
+\end{code}
+  
+  \item Once you have parse your results into a suitable format, it is time to thoroughly check whether the data contains all the information you will need to visualize and analyze your data.
+  
 \begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Sandbox checklist---after obtaining results from sandbox]
   \begin{itemize}
     \item Check that the HIT results in data being recorded once the participant (you or your team members) press submit. For example, the experiment might hang.
