@@ -1,0 +1,52 @@
+body {
+    font-family: Helvetica;
+}
+
+#body-wrapper {
+    margin: 10px auto;
+    padding: 0px 20px;
+    max-width: 1200px;
+}
+
+#section-title{
+    text-align: center;
+    font-size: 1.2em;
+    color: #0e6828;
+    padding: 10px 0px;
+    text-transform: uppercase;
+}
+.section-100 {  
+    clear: both;
+    width: 100%;
+    display: center;
+}
+
+.section-50{
+    float: left;
+    width: 48%;
+    padding:1%;
+    display: inline-block;
+    line-height:1.5em;
+}
+
+code {
+    background-color:#EEEEEE;
+    font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+}
+
+pre {
+    white-space: pre-line;
+}
+
+a {
+    color: #1D58B1;
+}
+
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}

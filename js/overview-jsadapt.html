@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" type="text/css" href="../css/docs.css" />
+        <link rel="stylesheet" type="text/css" href="../css/prism.css" />
+        <title>Documentation for Visual World Block</title>
+
+    </head>
+
+    <body>
+        <div id="body-wrapper">
+
+            <div id="section-title"><a name="experiment">Initialize Experiment</a></div>
+            <div class="section-100">
+            <div class="section-50 code" > <pre><code class="language-javascript">var e = new Experiment({</code>
+    consentForm: Link to Consent Form,
+    survey: Link to <a href=#survey>[Survey]</a>,
+    cookie: Name of <a href=#cookie>[Cookie]</a><code class="language-javascript">
+});
+e.init(); </code>
+
+[code that adds experiment <a href="#blocks">Blocks</a> to our Experiment]
+<code class="language-javascript">
+e.nextBlock(); //Starts running experiment</code>
+
+
+</code></pre>
+                </div>
+                <div class="section-50">
+                    <ul>
+                        <li>Initialize an empty Experiment with the consent form and survey link.</li>
+                        <li>Typically, an Experiment will contain multiple Blocks. No blocks have been added to the sample on the left.</li>
+                        <li>When you run an Experiment, it will move the participant through all the blocks that were added, followed by the survey you linked.</li>
+                    </ul>
+                </div>
+            </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="stimuli_creation">Creating Stimuli (ExtendedStimuliFileList)</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">
+var stimuli = new ExtendedStimuliFileList({
+    prefix: 'stimuli/stimuli_vot/', // Path for stimuli
+    filenames: ['BEACH-30.wav', 'BEACH90.wav'],
+    words: ['BEACH', 'PEACH'], //Effectively, the category.
+    supervised: ['supervised', 'supervised'], //supervised? unsupervised?
+    reps: [1, 2] //How often each stim should be repeated.
+});
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>An experiment block typically requires an object (i.e. ExtendedStimuliFileList) that contains all the stimuli and its relevant properties.</li>
+                        <li>ExtendedStimuliFileList can have any properties. However, <strong>filenames</strong> is required.</li>
+                        <li>Note: Some blocks will require the ExtendedStimuliFileList to have certain properties. See block documentation for more info.</li>
+                        <li>For the example on the left, you can access stimuli 1 via stimuli.filenames[1], stimuli.words[1], etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="stimuli">Reading Stimuli from a CSV file</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">//e is an Experiment object
+Papa.parse([SOME CSV FILE NAME], {
+    download: true,
+    header: true,
+    delimiter: '|',
+    skipEmptyLines: true,
+    //After reading the csv file, do this with the results
+    complete: function(results) {
+        var stimuli = new ExtendedStimuliFileList({
+            prefix: 'stimuli/stimuli_vot/',
+            // Each of these corresponds to a column in the stimuli file
+            filenames: getFromPapa(results, 'filename'),
+            ...
+            reps: getFromPapa(results, 'reps')
+        });
+
+        [Do some more stuff, e.g. add the stimuli to a block!]
+    }
+});
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>PapaParse is a CSV parsing library we can use to read csv files, e.g. those stored in lists/.</li>
+                        <li>getFromPapa takes a parsed CSV and a column name, and returns an array of all the values in that column.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="blocks">Adding Blocks</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">//e is an Experiment object
+//Create block named vwb
+var vwb = new VisworldBlock({
+    stimuli: [SOME STIMULI OBJ],
+    namespace: [SOME STRING NAME],
+    ...Other properties...
+});
+
+//Add vwb to experiment
+e.addBlock({
+    block: vwb,
+    onPreview: [show block during preview mode on MTurk?], //default false
+    showInTest: [show during debug mode?] //default true
+});
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>There are many types of blocks. We will focus on the <a href="#visual_world_block">VisworldBlock</a> in this experiment.</li>
+                        <li>Most experimental blocks will require an <a href="#stimuli_creation">ExtendedStimuliFileList object</a> and a (unique) namespace string.</li>
+                        <li>After you create a Block, you have to add it to the Experiment.</li>
+                        <li>onPreview: default false -- worker will not be able to see this block even before accepting the HIT.</li>
+                        <li>showInTest: default true -- show the block when running test/debug mode.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="visual_world_block">Block: VisworldBlock</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">var vwb = new VisworldBlock({stimuli: stimuli_obj,
+    images: stimImages, //Maps words to image locations
+    imageMapping:</code> <a href="#image_mapping">[imageMapping]</a>,
+    <code class="language-javascript">namespace: 'visualworldblock1',
+    breakEvery: 5,  //Take a break every x trials
+    imagePositions: ['left', 'right'], //where images are shown: top, bottom, left, right
+    showFamiliarization: false, //is true by default. If false, skips the familiarization phase
+    randomizeImagePositions: true, //Is true by default. If false, then just uses the list order above</code>
+    <a href="#randomization">randomizationMethod: 'shuffle'</a><code class="language-javascript">//Can also be set to "dont_randomize"
+});</code>
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>Description: The VisWorldBlock consists of a familiarization phase (click through randomized images and show names), followed by a labeling task (press green button to play a sound. Two images are shown. Click on the one that matches the sound you hear.) This is the paradigm used in Kleinschmidt et al. (2015).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+            <div class = "clear"></div>
+            <div id="section-title"><a name=survey>Post-Experiment Survey</a></div>
+            <div class="section-100">
+                <div class="section-50 code" >
+<pre><code class="language-markup">//Both questions will show up on the same page
+&lt;div class="question_section" id="QUESTION_NAME" style="display:visible">
+    [Question + input fields]
+    [Question + input fields]
+    //Move on to the next section when clicked
+    &lt;input type="button" value="Continue" class="moveOn"/>
+&lt;/div>
+
+//The following question will show up on a new page
+//Use display:none for the later question_sections
+&lt;div class="question_section" id="QUESTION2_NAME" style="display:none">
+    [Question + input fields]
+    &lt;input type="button" value="Continue" class="moveOn"/>
+&lt;/div>
+</code></pre>
+                </div>
+                <div class="section-50">
+                    <ul>
+                        <li>You can create custom experimental surveys to show to participants at the end of your experiment.</li>
+                        <li>All questions within a single question_section div will show up on the same page.</li>
+                        <li>Use style="display:visible" for the first question_section, and then style="display:none" for all the later question_sections.</li>
+                        <li>Any HTML input field (free response, radio button, checkbox, etc) can be used within a question_section.</li>
+                        <li>Giving the name moveOn to any input element (or button) will cause the survey to show the next question_section when the input button is clicked.</li>
+                        <li>Save your custom survey in surveys/NAME.html. You can see surveys/assignment-1-survey.html as an example.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+
+        <div id="section-title"><a name="url">Reading in URL parameters</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">//Read URL parameters
+//e.g. www.site.com/experiment.html?condition=short&list=a&someparameter=somevalue
+console.log(e.urlparams['condition']);
+//prints out "short"
+console.log(e.urlparams['list'] === 'a');
+//prints out true
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>You can feed in values to your Experiment via the URL.</li>
+                        <li>E.g. the value for a particular URL parameter could correspond to the condition or list a participant will be in. </li>
+                        <li>There is a built in url parameter that sets runs the experiment in <a href="#test">test mode</a> (for debugging purposes).
+                            <code>www.site.com/experiment?mode=test</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="test">Test vs Experiment Mode</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">//e is an Experiment object
+e.addBlock({
+    block: BLOCK_NAME,
+    onPreview: false,
+    showInTest: true //Block will run in Test and Experiment Mode.
+});
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>By default, the Experiment will assume you are in Experiment mode and will run accordingly.</li>
+                        <li>For debugging purposes, it can be handy to use test mode. You can enter test mode by added mode=test to your url.
+                            e.g. <code>www.site.com/experiment?mode=test</code>.</li>
+                        <li>When test mode is on, only blocks in which showInTest is set to true will be run. This can allow you to focus on the specifc block(s) you want to test, ignoring the others.</li>
+                        <li>Additionally, when test mode is on, no cookies (to track experiment completion) will be set at the end of the experiment.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="cookie">Preventing repeat takers via Cookies</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">var e = new Experiment({
+    ...
+    cookie: "completedExperiment1"
+});
+e.init(); </code>
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>A cookie name can be specified when the experiment is initialized to discourage workers from completing the HIT more than once.</li>
+                        <li>The participant will be given the cookie when they finish the experiment.</li>
+                        <li>Participants with the cookie will be shown a message that they cannot take the HIT again.</li>
+                        <li>This is a temporary measure of excluding certain participants. Use qualifications for better control.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="image_mapping">Image Mapping</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">var imageMapping = {
+    'unsupervised': {'beach': ['beach', 'peach'],   // all minimal pairs
+                        ...
+                      'peak': ['beak', 'peak']},
+     'supervised':  {'beach': ['beach', 'peas'],    // all non-minimal pairs
+                        ...
+                      'peak': ['bees', 'peak']},
+          'mixed': {'beach' : ['beach', 'peas'],
+                        ...
+                     'peak' : ['beak', 'peak']}
+    }; </code>
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>Determines the two images that will be shown on the scene, depending on condition and word.</li>
+                        <li>For instance, in this example, in the supervised condition, if the word 'beach' is played, the image for 'beach' and 'peas' will be shown.</li>
+                        <li>Required by VisWorldBlock.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class = "clear"></div>
+        <div id="section-title"><a name="randomization">Randomization Method</a></div>
+            <div class="section-100">
+                <div class="section-50 code">
+                    <pre><code class="language-javascript">var vwb = new VisworldBlock({stimuli: stimuli_obj,
+    ...
+    randomizationMethod: 'shuffle'
+}; </code>
+    </code></pre>
+                </div>
+                <div class="section-50" >
+                    <ul>
+                        <li>Can be provided to any experimental block. Default is shuffle.</li>
+                        <li>shuffle : randomizes order that soundfiles (including those with multiple reps) are presented in</li>
+                        <li>dont_randomize : presents list exactly in the order given (reps should be set to 1 in <a href="#stimuli_creation">ExtendedStimuliFileList</a> to avoid unexpected behavior of randomizing within repetition number)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script src="external/jquery-1.11.3.min.js" type="text/javascript" ></script>
+        <script src="external/prism.js" type="text/javascript" ></script>
+
+    </body>
+</html>
