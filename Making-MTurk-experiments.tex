@@ -11,10 +11,12 @@
             citecolor = blue,
             anchorcolor = blue]{hyperref}
             
-\newenvironment{code}%
-   {\par\noindent\adjustbox{margin=1ex,bgcolor=shadecolor,margin=0ex \medskipamount}\bgroup\minipage\linewidth\verbatim}%
-   {\endverbatim\endminipage\egroup}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{codewrap}{Verbatim}{breaklines,commandchars=\\\{\}}
 
+\newenvironment{code}%
+   {\par\noindent\adjustbox{margin=1ex,bgcolor=shadecolor,margin=0ex \medskipamount}\bgroup\minipage\linewidth\codewrap}%
+   {\endcodewrap\endminipage\egroup}
 
 %\DeclareUrlCommand{\burl}{\def\UrlFont{\ttfamily\color{blue}}}
 
@@ -36,6 +38,15 @@ Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} a
 
 %ADD LINK TO JSADAPT git
 
+
+\section{Disabling CORS errors when testing locally}
+\href{https://medium.com/swlh/avoiding-cors-errors-on-localhost-in-2020-5a656ed8cefa}{Avoiding CORS Errors on Localhost (in 2020)}
+
+To disable web security for Chrome, for example:
+
+\begin{code}
+open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir=”/tmp/chrome_dev_test” --disable-web-security
+\end{code}
 
 \section{Making your own experiment}
 
