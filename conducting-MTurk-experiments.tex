@@ -311,6 +311,7 @@ Before you upload your HIT to MTurk, make sure to go through a final check:
         \item Is the protocol still valid, i.e., not expired?
         \item Have you been added as an experimenter to this protocol?
         \item Do you have valid CITI?
+        \item Does your experiment provide a contact (email) address?
     \end{itemize}
     \item In the Javascript (.js) file for the experiment:
     \begin{itemize}
@@ -328,11 +329,16 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
 
 %Zach's scripts:check results.py (does what get_results.py does, but only checks; does not download results).one script that does all of this in one step: start, approved, all qualification, all results.
 
+\subsection{While the experiment is online}
+Make sure to regularly check the email account provides as contact for the experiment for emails from MTurk workers. 
 
 \subsection{Getting your results}
 Follow the steps described above for getting results from the sandbox except without the \texttt{-s} flag.
 
-\subsection{Approving (paying) workers}
+
+\section{Soon after the experiment}
+
+\subsection{Paying (approving) workers}
 The YAML configuration file for your experiment specifies a period after which workers who have completed an assignment for the HIT(s) will be automatically approved. It's this part in the YAML file:
 
 \begin{code}
@@ -340,9 +346,15 @@ The YAML configuration file for your experiment specifies a period after which w
 autoapprovaldelay: 1296000
 \end{code}
 
-Since IRB rules dictate that any participant has the right to abort an experiment at any point, we approve every worker who has taken the experiment. Even if you follow this guideline, it is recommended though that you keep track of whether some workers do seem to be gaming the system. You can add these workers to a qualification to avoid running them again in the future. Be careful though to ask yourself whether it wasn't lack of clarity of the instructions, rather than illintent on the participant's side that caused the pattern of data. In my experience, the former is the far more common cause for data that appears to suggest that participants are not really doing the task you intended.
+Since IRB rules dictate that any participant has the right to abort an experiment at any point, we approve every worker who has taken the experiment. Even if you follow this guideline, it is recommended though that you keep track of whether some workers do seem to be gaming the system. You can add these workers to a qualification to avoid running them again in the future. Be careful though to ask yourself whether it wasn't lack of clarity of the instructions, rather than nefarious intent on the participant's side that caused the pattern of data. In my experience, the former is the far more common cause for data that appears to suggest that participants are not really doing the task you intended.
 
-% also grant bonuses
+\subsection{Granting bonuses}
+
+In addition to payments, MTurk provides the option to grant a bonus to a worker. This option can come in handily, for example, when there are multiple visits to an experiment (e.g., a longitudinal study). In that case the reward would be the basic payment that the worker received for completing any part of the experiment, and the bonus would be used as an incentive to complete {\em all} visits of the experiment. *Mturkutils* comes with a separate script to grant bonuses to workers.
+
+\subsection{Paying workers who couldn't complete the experiment due to technical difficulties}
+
+% asked Wednesday about this.
 
 \subsection{Blocking workers from future experiments}
 You can use {\em mturkutil}'s \texttt{blockWorkers} program to create a new private qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
