@@ -330,7 +330,19 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
 %Zach's scripts:check results.py (does what get_results.py does, but only checks; does not download results).one script that does all of this in one step: start, approved, all qualification, all results.
 
 \subsection{While the experiment is online}
-Make sure to regularly check the email account provides as contact for the experiment for emails from MTurk workers. 
+\begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Monitoring while the experiment is in progress]
+\begin{itemize}
+    \item Check progress of your experiment. If nobody is completing assignments for the HIT, it is likely that something went wrong. % more detail here?
+    \item Regularly check the email account provided as contact for the experiment for emails from MTurk workers. Workers might run into technical difficulties. If that happens, consider the following questions. The sooner you act, the better your chances to create a bad reputation for the lab, to cause frustration among workers, or to waste money and time:
+    \begin{itemize}
+    	\item Is the problem so severe and likely to apply to others that you should abort the experiment? 
+	\item What can be learned from this problem for future experiments? Keep notes in your to-do file that avoid the same problem in future experiments. 
+	\item Be responsive to workers concerns and complaints. 
+	\item Offer to pay people that have tried to complete a HIT but then ran into technical difficulties (e.g., the computer hung). See Section \ref{sec:pay-incomplete}
+   \end{itemize}
+\end{itemize}
+\end{tcolorbox}
+   
 
 \subsection{Getting your results}
 Follow the steps described above for getting results from the sandbox except without the \texttt{-s} flag.
@@ -352,7 +364,7 @@ Since IRB rules dictate that any participant has the right to abort an experimen
 
 In addition to payments, MTurk provides the option to grant a bonus to a worker. This option can come in handily, for example, when there are multiple visits to an experiment (e.g., a longitudinal study). In that case the reward would be the basic payment that the worker received for completing any part of the experiment, and the bonus would be used as an incentive to complete {\em all} visits of the experiment. *Mturkutils* comes with a separate script to grant bonuses to workers.
 
-\subsection{Paying workers who couldn't complete the experiment due to technical difficulties}
+\subsection{Paying workers who couldn't complete the experiment due to technical difficulties}\label{sec:pay-incomplete}
 
 % asked Wednesday about this.
 
