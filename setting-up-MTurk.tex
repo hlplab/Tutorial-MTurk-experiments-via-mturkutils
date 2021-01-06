@@ -43,16 +43,22 @@ If you are not already familiar with Amazon Mechanical Turk, the steps below wil
     sandbox worker account (\href{https://workersandbox.mturk.com}{https://workersandbox.mturk.com}),
     
     and an Amazon Web Services (AWS) account (\href{https://aws.amazon.com/}{https://aws.amazon.com/}). 
-    \begin{itemize}
+    \begin{enumerate}
         \item You can use the same email address that you use for your main Amazon.com account to make things easier, but you might want to make a separate account (if you plan to share your password with other members of the group). 
         \item For the AWS account, you should select Basic access when prompted. Note that you will be asked to enter a credit card (though you will not be charged for this class).
         \item \textbf{Link your AWS account with your MTurk requester account}. To do that, go to \url{https://requester.mturk.com/developer}. Your AWS account should already show under Step 1 of that page. Under Step 2 of that page, there is an orange button ``Link your AWS account'' to link the requester account to AWS. Do that.
-        \item \bf{It may take up to a few days before your account(s) are confirmed, so be sure to sign up early}.
+        \item \textbf{It may take up to a few days before your account(s) are confirmed, so be sure to sign up early}.
         \item If you have a non-U.S. address, your account may be denied. 
-    \end{itemize}
-    \item Sign in to your AWS account and navigate to the console (\href{https://console.aws.amazon.com/iam/home}{https://console.aws.amazon.com/iam/home}). There will be a blue button on the upper left that says ``Create New Users''. It doesn’t matter what you enter for your username, so pick whatever you want. Once you create a user, you will be provided with an access key and a secret key. \textbf{These are important; please save them somewhere and do not share the secret key with others}!
-    \item Now you need to give your user permissions to use MTurk. On the left hand side of the console dashboard, you should see a tab called Policies. Click on that and select the one that says AmazonMechanicalTurkFullAccess. On the top of the page, select Policy Actions, and select Attach. You should be shown a page that contains the username from the step about. Select that username to give it MTurk permissions. 
-    
+    \end{enumerate}
+    \item Sign in to your AWS account and navigate to the console (\href{https://console.aws.amazon.com/iam/home}{https://console.aws.amazon.com/iam/home}). Under {\em Access management} $\rightarrow$ {\em Users}, click the blue button that says {\em Create New Users}. This wills start the user creation process, which consists of several steps.
+    \begin{enumerate}
+    	\item On the first screen, it doesn’t matter what you enter for your username, so pick whatever you want. 
+    	\item Select {\em Programmatic access}.
+    	\item On the next screen, select {\em Attach existing policies directly} and search for ``AmazonMechanicalTurkFullAccess''. Then select this policy by clicking the check box to its left.
+    	\item You can skip the subsequent screens. You don't need to select any tags. Just complete all steps and press the {\em Create user} button.
+   \end{enumerate} 
+    \item Once you create a user, you will be provided with an access key and a secret key. \textbf{These are very important. You must save them somewhere since you will need to refer to it later. And, do not share the secret key with others!}
+   
 \end{enumerate}
 
 \section{Install Python and boto3}
@@ -258,7 +264,7 @@ As you can read in the README.md ``The original scripts use the now unsupported 
 
 % ADD INSTALLATION INSTRUCTIONS HERE.
 
-%there are seven script (load hit and get results are also used for sandbox with --sandbox flag; result after sandbox).load hit (starts experiments):each list is a HIT with a separate YAML fileall YAML files are in one directory (might not need to be web-facing, Zach says)]script takes one YAML file as input, checks account balance, makes experiment go live, stores a file yaml-filename.success.yaml (Zach wasn't sure whether this output is stored in directory script is called from or directory of YAML input since he runs it from the latter). BE CAREFUL NOT TO OVERWRITE THIS FILE BY RUNNING THE SCRIPT AGAIN.get results (takes as input the output file of starting an experiment: yaml-filename.success.yaml): checks whether finished; gets hit results that are finished and writes them into a result fileget all hits (not used by Zach)approving work (done after completing results)assigning qualifications (you took this experiment; so that you can't take it again)block workersgrant bonuses (unclear whether this has to be done before approving)
+%there are seven script (load hit and get results are also used for sandbox with --sandbox flag; result after sandbox).load hit (starts experiments):each list is a HIT with a separate YAML fileall YAML files are in one directory (might not need to be web-facing, Zach says)]script takes one YAML file as input, checks account balance, makes experiment go live, stores a file yaml-filename.success.yaml (Zach wasn't sure whether this output is stored in directory script is called from or directory of YAML input since he runs it from the latter). BE CAREFUL NOT TO OVERWRITE THIS FILE BY RUNNING THE SCRIPT AGAIN.get results (takes as input the output file of starting an experiment: yaml-filename.success.yaml): checks whether finished; gets hit results that are finished and writes them into a result fileget all hits (not used by Zach)approving work (done after completing results)assigning qualifications (you took this experiment; so that you can't take it again)block workersgrant bonuses (unclear whether this has to be done before approving)
 
 To learn more about any of the mturkutils scripts, call the script with the -h tag (``h'' for help). In your terminal, go to the mturkutils/boto3/ folder and try, for example:
 
