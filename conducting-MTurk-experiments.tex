@@ -352,11 +352,18 @@ Follow the steps described above for getting results from the sandbox except wit
 \section{Soon after the experiment}
 
 \subsection{Paying (approving) workers}
+\textbf{If you don’t pay workers quickly, then you start getting bad feedback and no one will want to do your HITs. }
 The YAML configuration file for your experiment specifies a period after which workers who have completed an assignment for the HIT(s) will be automatically approved. It's this part in the YAML file:
 
 \begin{code}
 # this Auto Approval period is 60*60*24*15 = 15 days
 autoapprovaldelay: 1296000
+\end{code}
+
+However, it’s best to think of the autoapprove as an insurance policy in case you forget. You want the auto-approve interval long enough time to let yourself reject bad actors’ work (if you can)  but you want to approve good work quickly enough that you get good ratings on the turker boards. To pay all the workers contained in a result file, use:
+
+\begin{code}
+python approveWork.boto3.py -r RESULT_FILE -p PROFILE_NAME
 \end{code}
 
 IRB rules dictate that anyone taking the experiment should be reimbursed. This means you should approve {\em all} workers who have taken your experiment. 
