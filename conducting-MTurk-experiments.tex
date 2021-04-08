@@ -248,7 +248,7 @@ Like described in the previous section, this approach assumes that your the HTML
 
 
 \subsection{Preventing unwanted subjects from taking your experiment}\label{sec:private-qualification}
-Qualifications can be used to keep people from taking your experiment. For example, we standardly include the following qualifications in the YAML file for our HITs, limiting our experiments to workers who are in the US (as far as MTurk can tell based on their IPs) and who have 95\% approval ratings from previous HITs they have taken:
+Qualifications can be used to keep people from taking your experiment. For example, we standardly include the following qualifications in the YAML file for our HITs, limiting our experiments to workers who are in the US (as far as MTurk can tell based on their IPs), who have 95\% approval ratings from previous HITs they have taken, and who have completed at least 100 HITs:
 
 \begin{code}
 qualifications:
@@ -258,6 +258,11 @@ qualifications:
      comparator: GreaterThan
      value: 95
      private: true
+   # this is a built-in qualification -- user must have successfully completed 100 HITs
+   - qualification: NumberHITsApproved,
+     comparator: GreaterThan,
+     value: 100
+     private: true
    # this is a built-in qualification -- user must be in the United States
    - qualification: LocaleRequirement
      comparator: EqualTo
@@ -265,6 +270,26 @@ qualifications:
      private: true
 \end{code}
 
+More details on \href{https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_QualificationRequirementDataStructureArticle.html}{what built-in qualification types are available and how to use them} can be found on Amazon's website, which also contains some helpful \href{https://blog.mturk.com/launch-requesters-now-have-more-control-over-hit-visibility-via-the-mturk-api-55ffdf5e7d4}{walk-through examples with code}. For example, if you would like to specifically recruit workers from all states except Hawaii and Alaska---e.g., because you'd like to keep the time zones restricted---the following combination of qualifications should do the job:
+
+\begin{code}
+qualifications:
+  builtin:
+   # this is a built-in qualification -- user must be in the United States, 
+   # but not Hawaii or Alaska
+   - qualification: LocaleRequirement
+     comparator: EqualTo
+     locale: US
+     private: true
+   - qualification: LocaleRequirement
+     comparator: NotEqualTo
+     locale: (US, HI)
+     private: true
+   - qualification: LocaleRequirement
+     comparator: NotEqualTo
+     locale: (US, AK)
+     private: true
+\end{code}
 
 Additionally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
 
@@ -371,7 +396,13 @@ IRB rules dictate that anyone taking the experiment should be reimbursed. This m
 
 
 \subsection{Blocking workers from {\em any} future experiments}
-After reimbursement though you might be interested in excluding participants who {\em clearly} gamed the system from future experiments (see next section). Be careful though:  ask yourself whether it wasn't lack of clarity of the instructions, rather than nefarious intent on the participant's side that caused the pattern of data. In our experience, the former is the far more common cause for data that appears to suggest that participants are not really doing the task you intended. If you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script:
+After reimbursement though you might be interested in excluding participants who {\em clearly} gamed the system from future experiments (see next section). Be careful though:  ask yourself whether it wasn't lack of clarity of the instructions, rather than nefarious intent on the participant's side that caused the pattern of data. In our experience, the former is the far more common cause for data that appears to suggest that participants are not really doing the task you intended. To quote from \href{https://blog.mturk.com/tutorial-best-practices-for-managing-workers-in-follow-up-surveys-or-longitudinal-studies-4d0732a7319b}{Amazon's ``Best practices''} (emphasis added):
+
+\begin{quote}
+A word of caution: MTurk has a built-in capability for a Requester to “block” a Worker from working on that Requester’s tasks in the future. Requesters use this capability to identify and exclude Workers that have consistently produced poor quality results on their tasks. \textbf{We strongly urge Requesters to avoid using this feature to exclude Workers for convenience. Doing so could negatively impact the Worker’s reputation in MTurk.}
+\end{quote}
+
+If, after careful consideration, you decide that you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script:
 
 \begin{code}
 python blockWorkers.boto3.py -h
