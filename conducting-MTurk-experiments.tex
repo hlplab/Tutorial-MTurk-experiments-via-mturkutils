@@ -317,11 +317,11 @@ python assignQual.py -h
      private: true
 \end{code}
 
-  \item Since these qualifications are not visible from the sanbox, you will typically add them to only the YAML file once you move to production. \textbf{If you intend to block subjects that have taken previous experiments, remember to include these additional qualifications in the YAML configuration file for production}.
+  \item Since these qualifications are not visible from the sandbox, you will typically add them to only the YAML file once you move to production. \textbf{If you intend to block subjects that have taken previous experiments, remember to include these additional qualifications in the YAML configuration file for production}.
 
 \end{enumerate}
 
-
+If you're not sure whether you have already assigned the relevant qualifications to all workers, you can \href{https://requester.mturk.com/workers/download?utf8=\%E2\%9C\%93&check=true}{download a csv file with all workers you've previously run along with all the qualifications you have previously assigned to them} from your MTurk requester account.
 
 \section{Going live!}
 
@@ -427,7 +427,7 @@ IRB rules dictate that any participant has the right to abort an experiment at a
 
 \begin{itemize}
 	\item Set up a new qualification through the MTurk requester website (see Section \ref{sec:private-qualification}).
-	\item Assign that qualification to the workers in question.
+	\item Assign that qualification to the workers in question. (If you are not sure whether you have already done so, you can  \href{https://requester.mturk.com/workers/download?utf8=\%E2\%9C\%93&check=true}{download a csv file with all workers you've previously run along with all the qualifications you have previously assigned to them} from your MTurk requester account.)
 	\item Make a new HIT that just contains a single question like ``Click this checkbox to get paid and press submit.''
 	\item Send out an email to the worker(s) and tell them to search for that HIT (since one apparently can't directly send links to HITs). 
 \end{itemize}
@@ -441,6 +441,7 @@ The following is a screen shot of a HIT description that was used for remunerati
 \label{default}
 \end{center}
 \end{figure}
+
 
 \subsection{Granting bonuses}
 
