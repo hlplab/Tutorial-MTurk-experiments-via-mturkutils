@@ -111,7 +111,7 @@ Finally, install pyMTurkR, an R library that allow interaction with MTurk throug
 
 Now we need to link boto with your account by setting a configuration file with your AWS access key and secret key from Step 1. This can be done in a number of ways. The ultimate goal in all cases is to set three environment variables AWS\_ACCESS\_KEY\_ID, AWS\_SECRET\_ACCESS\_KEY, and AWS\_DEFAULT\_REGION (to: us-east-1).
 
-On Windows, directly set all three variables by editing your system environment variables. On Mac or Linux machines, create a credentials file in \~/.aws (i.e. \~/.aws/credentials) and edit it to contain the following lines (case matters!):
+On Windows, directly set all three variables by editing your system environment variables, or you can create an credentials file in C:\textbackslash Users\textbackslash USERNAME\textbackslash .aws\textbackslash credentials. The latter method might be preferably in case the setting of environment variables is not permanent. On Mac or Linux machines, create a credentials file in $\sim$/.aws (i.e. $\sim$/.aws/credentials) and edit it to contain the following lines (case matters!):
 
 \begin{code}
 [default]
@@ -119,7 +119,7 @@ aws_access_key_id = your_access_key_here
 aws_secret_access_key = your_secret_key_here
 \end{code}
 
-Next, create and edit the config file in \~/.aws (i.e. \~/.aws/config):
+Next, create and edit the config file in $\sim$/.aws (i.e. $\sim$/.aws/config):
 
 \begin{code}
 [default]
@@ -258,7 +258,7 @@ This points to some issue with your account setup. PyMTurkR is able to reach you
 
 There are many ways to interact with MTurk. One convenient way is to use a collection of boto3 script written by former HLP lab manager Andrew Watts. You can get the most recent mturkutils at \url{https://bitbucket.org/hlplab/mturkutils/src/master/}. Alternatively, you might use the R library pyMTurkR. 
 
-This tutorial comes pre-packaged with mturkutils (version as of October, 2020), and we will use it below to upload HIT to MTurk and obtain results from MTurk. The mturkutils scripts can be found in the mturkutils/ folder. \textbf{In your terminal, navigate to the mturkutils directory.} 
+This tutorial comes pre-packaged with mturkutils (version as of October, 2020), and {\bf the second part of this tutorial uses mturkutils} to upload HITs to MTurk or the MTurk sandbox, to obtain results from MTurk, and to approve work and pay workers. The mturkutils scripts can be found in the mturkutils/ folder. 
 
 As you can read in the README.md ``The original scripts use the now unsupported boto library. Some scripts have been updated to use the current boto3 and botocore libraries. Originals are in the `boto` directory and updated are in `boto3`. Updated versions also require Python 3.'' We will be using the scripts in the boto3 folder. 
 
