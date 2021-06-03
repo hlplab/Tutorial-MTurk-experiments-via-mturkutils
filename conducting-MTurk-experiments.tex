@@ -295,7 +295,7 @@ qualifications:
 For an additional price tag per assignment, Amazon offers a \href{https://requester.mturk.com/pricing}{wide range of additional qualifications}, based on workers' self-reported information. This includes demographic information (age, gender, etc.), political orientation, socio-economic status, daily internet usage, and many many more features.
 
 \subsubsection{Custom qualifications}
-Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
+Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private/custom qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
 
 \begin{enumerate}
 
@@ -333,14 +333,14 @@ Before you upload your HIT to MTurk, make sure to go through a final check:
     \item Does your YAML configuration file for the live production version match the YAML production file for sandboxing (which you have carefully debugged), {\em except} for:
     \begin{itemize}
       \item The number of assignments per HIT (which might have been set to 1 for sandboxing but now should yield the desired number of assignments).
-      \item \textbf{Any additional private qualifications}, such as required to block participants who have taken similar previous experiments from your lab.
+      \item \textbf{Any additional private/custom qualifications}, such as required to block participants who have taken similar previous experiments from your lab.
     \end{itemize}
     \item Ethics:
     \begin{itemize}
         \item Does this experiment fall under a protocol approved by the human subject review board?
         \item Is the protocol still valid, i.e., not expired?
         \item Have you been added as an experimenter to this protocol?
-        \item Do you have valid CITI?
+        \item Do you have valid CITI? (certificate that you have gone through RSRB training)
         \item Does your experiment provide a contact (email) address?
     \end{itemize}
     \item In the Javascript (.js) file for the experiment:
@@ -414,7 +414,7 @@ python blockWorkers.boto3.py -h
 
 
 \subsection{Blocking workers from {\em similar} future experiments}
-Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
+Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
 
 \begin{code}
 python assignQual.boto3.py -h
