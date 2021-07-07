@@ -360,7 +360,7 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
 
 %Zach's scripts:check results.py (does what get_results.py does, but only checks; does not download results).one script that does all of this in one step: start, approved, all qualification, all results.
 
-\subsection{While the experiment is online}
+\subsection{While the experiment is live}
 \begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Monitoring while the experiment is in progress]
 \begin{itemize}
     \item Check progress of your experiment. If nobody is completing assignments for the HIT, it is likely that something went wrong. % more detail here?
@@ -368,11 +368,23 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
     \begin{itemize}
     	\item Is the problem so severe and likely to apply to others that you should abort the experiment? 
 	\item What can be learned from this problem for future experiments? Keep notes in your to-do file that avoid the same problem in future experiments. 
-	\item Be responsive to workers concerns and complaints. 
+	\item Be responsive to workers concerns and complaints.  See  Section \ref{sec:common-concerns} for a list of common issues that come up during experiments.
 	\item Offer to pay people that have tried to complete a HIT but then ran into technical difficulties (e.g., the computer hung). See Section \ref{sec:pay-incomplete}
    \end{itemize}
 \end{itemize}
 \end{tcolorbox}
+   
+\subsection{Common issues, how to avoid, and how to address them}\label{sec:common-concerns}
+
+A few issues tend to come up in almost every experiment, most of them relating to technical difficulties or workers not reading your instructions in the way you intended.
+
+\begin{itemize}
+	\item Workers are sometimes concerned that they won't get paid because they misclicked or mistyped on a few trials. Consider rewording your instructions so that it is clear that occasional mistakes are not only understandable (and will still result in payment) but are, in fact, of interest to researchers in the cognitive sciences. Be clear that whatever performance measures you are eliciting are there to exclude the {\em very few} workers who actually game the system with random clicking.
+	\item A common reason for technical difficulties are browser incompatibilities. What you can do is a) try to use javascript that is robust across browsers and operating systems. Generally basic javascript is better than using packages, though even basic javascript is sometimes interpreted differently across environments; b) test / sandbox your experiment across multiple platforms; c) recognize incompatible browser types in your javascript, and prevent those user from taking your experiment; d) {\bf state clearly in the description of your HIT which browsers and operating systems are acceptable.}
+	\item Workers tend to contact you statig that something didn't work---the experiment froze, they had to reload it, they couldn't submit the HIT. Our first question is usually, please take a screen shot, tell us your browser version and operating system, and (for techincally advanced workers) send us a copy of the console output. However, often that information is not available by the time workers contact you, as they have typically closed that browser window. {\bf It's a good idea to alert workers in your instructions to take screen shots of problems.}
+	\item If you use cookies to prevent workers from taking the experiment twice, that can create confusion, also because some people share the same worker accounts. Our answer to those cases is always that we cannot ascertain that it is not the same individual, and the integrity of our research would not be guaranteed if we allowed the same individual to take the same experiment more than once. I also recommend writing your instructions in such a way that this is very clear.
+	
+\end{itemize}
    
 
 \subsection{Getting your results}
