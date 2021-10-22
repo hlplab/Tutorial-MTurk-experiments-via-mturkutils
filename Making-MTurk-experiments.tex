@@ -22,7 +22,7 @@
 
 \newcommand{\burl}[3][blue]{\href{#1}{\color{#2}{#3}}}%
 
-\title{Programming MTurk experiments via {\em jsadapt}}
+\title{Programming MTurk experiments via {\em JSEXP}}
 \author{Florian Jaeger with help from Linda Liu, Zach Burchill, Wednesday Bushong, and Xin Xie}
 
 \begin{document}
@@ -33,10 +33,7 @@
 
 \section{Overview}
 
-Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} and {\em Conducting Mechanical Turk experiments}. This tutorial walks you through how to program your own experiment using {\em jsadapt}, which is a collection of Javascript programs originally written by Dave Kleinschmidt and then extended and modified by Linda Liu, Zach Burchill, Wednesday Bushong, Esteban Buz, Xin Xie, and others.
-
-
-%ADD LINK TO JSADAPT git
+Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} and {\em Conducting Mechanical Turk experiments}. This tutorial walks you through how to program your own experiment using {\em \href{https://github.com/hlplab/JSEXP/}{JSEXP}}, which is a collection of Javascript programs originally written by Dave Kleinschmidt and then extended and modified by Zach Burchill, Wednesday Bushong, Esteban Buz, Florian Jaeger, Linda Liu, Xin Xie, and others.
 
 
 \section{Disabling CORS errors when testing locally}
@@ -112,7 +109,7 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 
 
 
-\section{Example experiments using {\em jsadapt}}
+\section{Example experiments using {\em JSEXP}}
 
 \begin{itemize}
     \item The code for the unsupervised and supervised learning experiment in Kleinschmidt et. al (2015) \footnote{\href{https://mindmodeling.org/cogsci2015/papers/0200/paper0200.pdf}{https://mindmodeling.org/cogsci2015/papers/0200/paper0200.pdf}} can be cloned from \url{https://bitbucket.org/hlplab/nrtmodule/src/master/}. If you'd like to get a sense of a full version of the experiment, you can test it out at \url{https://www.hlp.rochester.edu/mturk/mtadapt/sup-unsup/}.
