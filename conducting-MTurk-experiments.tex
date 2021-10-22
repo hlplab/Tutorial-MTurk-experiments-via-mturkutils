@@ -295,7 +295,7 @@ qualifications:
 For an additional price tag per assignment, Amazon offers a \href{https://requester.mturk.com/pricing}{wide range of additional qualifications}, based on workers' self-reported information. This includes demographic information (age, gender, etc.), political orientation, socio-economic status, daily internet usage, and many many more features.
 
 \subsubsection{Custom qualifications}
-Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
+Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private/custom qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
 
 \begin{enumerate}
 
@@ -333,14 +333,14 @@ Before you upload your HIT to MTurk, make sure to go through a final check:
     \item Does your YAML configuration file for the live production version match the YAML production file for sandboxing (which you have carefully debugged), {\em except} for:
     \begin{itemize}
       \item The number of assignments per HIT (which might have been set to 1 for sandboxing but now should yield the desired number of assignments).
-      \item \textbf{Any additional private qualifications}, such as required to block participants who have taken similar previous experiments from your lab.
+      \item \textbf{Any additional private/custom qualifications}, such as required to block participants who have taken similar previous experiments from your lab.
     \end{itemize}
     \item Ethics:
     \begin{itemize}
         \item Does this experiment fall under a protocol approved by the human subject review board?
         \item Is the protocol still valid, i.e., not expired?
         \item Have you been added as an experimenter to this protocol?
-        \item Do you have valid CITI?
+        \item Do you have valid CITI? (certificate that you have gone through RSRB training)
         \item Does your experiment provide a contact (email) address?
     \end{itemize}
     \item In the Javascript (.js) file for the experiment:
@@ -360,7 +360,7 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
 
 %Zach's scripts:check results.py (does what get_results.py does, but only checks; does not download results).one script that does all of this in one step: start, approved, all qualification, all results.
 
-\subsection{While the experiment is online}
+\subsection{While the experiment is live}
 \begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Monitoring while the experiment is in progress]
 \begin{itemize}
     \item Check progress of your experiment. If nobody is completing assignments for the HIT, it is likely that something went wrong. % more detail here?
@@ -368,11 +368,23 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
     \begin{itemize}
     	\item Is the problem so severe and likely to apply to others that you should abort the experiment? 
 	\item What can be learned from this problem for future experiments? Keep notes in your to-do file that avoid the same problem in future experiments. 
-	\item Be responsive to workers concerns and complaints. 
+	\item Be responsive to workers concerns and complaints.  See  Section \ref{sec:common-concerns} for a list of common issues that come up during experiments.
 	\item Offer to pay people that have tried to complete a HIT but then ran into technical difficulties (e.g., the computer hung). See Section \ref{sec:pay-incomplete}
    \end{itemize}
 \end{itemize}
 \end{tcolorbox}
+   
+\subsection{Common issues, how to avoid, and how to address them}\label{sec:common-concerns}
+
+A few issues tend to come up in almost every experiment, most of them relating to technical difficulties or workers not reading your instructions in the way you intended.
+
+\begin{itemize}
+	\item Workers are sometimes concerned that they won't get paid because they misclicked or mistyped on a few trials. Consider rewording your instructions so that it is clear that occasional mistakes are not only understandable (and will still result in payment) but are, in fact, of interest to researchers in the cognitive sciences. Be clear that whatever performance measures you are eliciting are there to exclude the {\em very few} workers who actually game the system with random clicking.
+	\item A common reason for technical difficulties are browser incompatibilities. What you can do is a) try to use javascript that is robust across browsers and operating systems. Generally basic javascript is better than using packages, though even basic javascript is sometimes interpreted differently across environments; b) test / sandbox your experiment across multiple platforms; c) recognize incompatible browser types in your javascript, and prevent those user from taking your experiment; d) {\bf state clearly in the description of your HIT which browsers and operating systems are acceptable.}
+	\item Workers tend to contact you statig that something didn't work---the experiment froze, they had to reload it, they couldn't submit the HIT. Our first question is usually, please take a screen shot, tell us your browser version and operating system, and (for techincally advanced workers) send us a copy of the console output. However, often that information is not available by the time workers contact you, as they have typically closed that browser window. {\bf It's a good idea to alert workers in your instructions to take screen shots of problems.}
+	\item If you use cookies to prevent workers from taking the experiment twice, that can create confusion, also because some people share the same worker accounts. Our answer to those cases is always that we cannot ascertain that it is not the same individual, and the integrity of our research would not be guaranteed if we allowed the same individual to take the same experiment more than once. I also recommend writing your instructions in such a way that this is very clear.
+	
+\end{itemize}
    
 
 \subsection{Getting your results}
@@ -414,7 +426,7 @@ python blockWorkers.boto3.py -h
 
 
 \subsection{Blocking workers from {\em similar} future experiments}
-Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
+Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
 
 \begin{code}
 python assignQual.boto3.py -h
