@@ -1,0 +1,278 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{verbatim}
+\definecolor{shadecolor}{rgb}{.9, .9, .9}
+\usepackage{tcolorbox}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+            
+\newenvironment{code}%
+   {\par\noindent\adjustbox{margin=1ex,bgcolor=shadecolor,margin=0ex \medskipamount}\bgroup\minipage\linewidth\verbatim}%
+   {\endverbatim\endminipage\egroup}
+
+\newenvironment{code2}%
+   {\center\par\noindent\adjustbox{margin=2ex,bgcolor=shadecolor,margin=0ex \medskipamount}\bgroup\varwidth\linewidth\verbatim}%
+   {\endverbatim\endvarwidth\egroup\center}
+
+\newcommand{\burl}[3][blue]{\href{#1}{\color{#2}{#3}}}%
+
+\title{Setting up Mechanical Turk, {\em boto(3)}, and {\em mturkutils}}
+\author{Florian Jaeger with help from Andrew Watts, Linda Liu, Zach Burchill, and Xin Xie}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents 
+
+\section{Set up Mechanical Turk accounts}
+
+If you are not already familiar with Amazon Mechanical Turk, the steps below will help you get started:
+
+\begin{enumerate}
+    \item Register for an MTurk requester account (\href{https://www.mturk.com/mturk/welcome}{https://www.mturk.com/mturk/welcome}),
+    
+    sandbox requester account (\href{https://requestersandbox.mturk.com}{https://requestersandbox.mturk.com}), 
+    
+    sandbox worker account (\href{https://workersandbox.mturk.com}{https://workersandbox.mturk.com}),
+    
+    and an Amazon Web Services (AWS) account (\href{https://aws.amazon.com/}{https://aws.amazon.com/}). 
+    \begin{enumerate}
+        \item You can use the same email address that you use for your main Amazon.com account to make things easier, but you might want to make a separate account (if you plan to share your password with other members of the group). 
+        \item For the AWS account, you should select Basic access when prompted. Note that you will be asked to enter a credit card (though you will not be charged for this class).
+        \item \textbf{Link your AWS account with your MTurk requester account}. To do that, go to \url{https://requester.mturk.com/developer}. Your AWS account should already show under Step 1 of that page. Under Step 2 of that page, there is an orange button ``Link your AWS account'' to link the requester account to AWS. Do that.
+        \item \textbf{It may take up to a few days before your account(s) are confirmed, so be sure to sign up early}.
+        \item If you have a non-U.S. address, your account may be denied. 
+    \end{enumerate}
+    \item Sign in to your AWS account and navigate to the console (\href{https://console.aws.amazon.com/iam/home}{https://console.aws.amazon.com/iam/home}). Under {\em Access management} $\rightarrow$ {\em Users}, click the blue button that says {\em Create New Users}. This wills start the user creation process, which consists of several steps.
+    \begin{enumerate}
+    	\item On the first screen, it doesn’t matter what you enter for your username, so pick whatever you want. 
+    	\item Select {\em Programmatic access}.
+    	\item On the next screen, select {\em Attach existing policies directly} and search for ``AmazonMechanicalTurkFullAccess''. Then select this policy by clicking the check box to its left.
+    	\item You can skip the subsequent screens. You don't need to select any tags. Just complete all steps and press the {\em Create user} button.
+   \end{enumerate} 
+    \item Once you create a user, you will be provided with an access key and a secret key. \textbf{These are very important. You must save them somewhere since you will need to refer to it later. And, do not share the secret key with others!}
+   
+\end{enumerate}
+
+\section{Install Python and boto3}
+
+\begin{enumerate}
+    \item Begin by install Python (version 3 or higher). \textbf{If you had an earlier version of Python installed, the new version might be linked as Python3 and pip might be linked as pip3, and you might have to adjust the commands below accordingly.} pip helps you install Python packages. It should come with any recent version of Python. You can find out what version of Python you have by typing the following into a terminal window:
+
+\begin{code}
+python --version
+\end{code}
+
+or, if you already have python version 3, try:
+
+\begin{code}
+python3 --version
+\end{code}
+
+    
+    \item Then install boto3, a Python package for interaction with Amazon's MTurk. 
+
+\begin{code}
+pip install boto3
+\end{code}
+
+    \item You will also need to install a few Python packages. pyyaml is a YAML parser for Python. YAML stands for ``Yet Another Markup Language'' or ``YAML Ain't Markup Language'', and is a convenient way of reading (for humans and computers) data. You will see an example of YAML syntax in a later section. In your terminal:
+
+\begin{code}
+pip install pyyaml
+pip install ruamel_yaml
+pip install xmltodict
+pip install unicodecsv
+pip install pandas
+\end{code}
+
+    \item And if you're using Python 3.9 or higher additionally install the following:
+    
+\begin{code}
+pip install ruamel.yaml.clib
+\end{code}
+
+\end{enumerate}
+
+\subsection{If you want to use boto3 through R}
+Finally, install pyMTurkR, an R library that allow interaction with MTurk through the boto package without requiring you to know Python. Step by step instructions are provided at \url{https://cran.r-project.org/web/packages/pyMTurkR/readme/README.html}. Make sure to complete all three steps on that page. 
+
+
+
+
+\section{Link Boto to your AWS account}
+
+Now we need to link boto with your account by setting a configuration file with your AWS access key and secret key from Step 1. This can be done in a number of ways. The ultimate goal in all cases is to set three environment variables AWS\_ACCESS\_KEY\_ID, AWS\_SECRET\_ACCESS\_KEY, and AWS\_DEFAULT\_REGION (to: us-east-1).
+
+On Windows, directly set all three variables by editing your system environment variables, or you can create an credentials file in C:\textbackslash Users\textbackslash USERNAME\textbackslash .aws\textbackslash credentials. The latter method might be preferably in case the setting of environment variables is not permanent. On Mac or Linux machines, create a credentials file in $\sim$/.aws (i.e. $\sim$/.aws/credentials) and edit it to contain the following lines (case matters!):
+
+\begin{code}
+[default]
+aws_access_key_id = your_access_key_here
+aws_secret_access_key = your_secret_key_here
+\end{code}
+
+Next, create and edit the config file in $\sim$/.aws (i.e. $\sim$/.aws/config):
+
+\begin{code}
+[default]
+region = us-east-1
+\end{code}
+
+Both the shared credentials file and the config file also supports the concept of profiles. Profiles represent logical groups of configuration. For example, for the shared credential file you might want to specify two separate profiles:
+
+\begin{code}
+[default]
+aws_access_key_id=foo
+aws_secret_access_key=bar
+
+[lab]
+aws_access_key_id=foo2
+aws_secret_access_key=bar2
+\end{code}
+
+You can then directly refer to the name of a profile when you work with *boto3* or *mturkutils*. This is convenient, for example, if you want to use your personal AWS account for debugging your experiment but then use a user linked to the lab's AWS account for the actual experiment. For more information or if you run into problems, see \url{https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html}.
+
+\begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=If you're stuck on how to create the config file...]
+
+    You can use your text editor of choice to create this file. If you're stuck or don't have a text editor preference, here are some instructions for how to do it using vi. This is the default text editor for all UNIX-esque systems, so if you have a Mac, you already have it. As a warning, if you haven't used vi before, these steps might seem funky and unintuitive. But vi is pretty much as fast, lightweight, and powerful as text editors come, so I highly recommend it.  \\
+    
+    At the command line, type 
+    
+    \begin{code}
+    vi ~/.aws/credentials
+    \end{code}
+    
+    This opens vi with a new file called {\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}/.boto. Now that you are in vi, do the following steps:
+    
+    \begin{itemize}
+        \item Press i (to go into insert mode)
+        \item Paste your credentials in the proper format
+        \item Press Esc (to go into command mode)
+        \item Type :wq Enter (to quit and save)
+    \end{itemize}
+
+\end{tcolorbox} 
+
+
+\subsection{AWS shell}
+
+\href{https://github.com/awslabs/aws-shell}{AWS shell} is a tool that simplifies interaction with MTurk through the command line. There is a \href{https://blog.mturk.com/tutorial-crowdsourcing-from-the-command-line-a5bee86fdaa0}{nice introduction to AWS shell with guidelines on how to install it} and a \href{https://blog.mturk.com/tutorial-managing-mturk-hits-with-the-aws-command-line-interface-56eaabb7fd4c}{tutorial on more advanced topics}.
+
+
+\subsection{If want to use boto3 through R}
+
+Open the .Renviron file. You can do this through RStudio, either through the file menu (make sure to selection the option "Show hidden files" or through the terminal within RStudio). On Linux/MacOS, the file will be in your home directory. On Windows, the .Renviron file might be under C:\textbackslash Users\textbackslash USERNAME\textbackslash Documents\textbackslash. If you do not already have a .Renviron file, you can make one in RStudio (File > New File > Textfile and save it as .Renviron in the directory indicated in the previous sentences). In the .Renviron file add the following lines and save the file (case matters!):
+
+\begin{code}
+AWS_ACCESS_KEY_ID=your_access_key_here
+AWS_SECRET_ACCESS_KEY=your_secret_key_here
+\end{code}
+
+Then restart R (from the Session menu in RStudio). Your AWS credentials should not be linked to boto3 everytime you use R. 
+
+
+
+
+
+
+\section{Test it}
+Let's make sure everything is properly connected. To do this, we will try to connect to your MTurk sandbox using boto3. The sandbox is the testing area for HITs; only requesters (and not normal workers) can view sandboxed HITs. Other than that, the sandbox environment is identical to the environment that workers see. We will explore the sandbox in more detail in Section 6 by uploading a HIT to it.
+
+In your command line, start python (or use whatever you typically use to run python). In your Python interpreter, type the following to connect to MTurk sandbox: 
+
+\begin{code}
+import boto3
+session = boto3.Session()
+# Alternatively, specify which profile you would like to use, e.g.:
+# session = boto3.Session(profile_name='lab')
+
+mtc = session.client('mturk')
+
+# Alternatively, you can specify a specific region name, overriding your default profile
+# endpoint = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+# mtc = session.client('mturk', endpoint_url=endpoint, region_name='us-east-1')
+print(mtc.get_account_balance())
+\end{code}
+
+You should get something like the following output (MTurk sandbox always contains \$10k of fake money):
+
+\begin{code}
+{'AvailableBalance': '10000.00', 
+'ResponseMetadata': {
+    'RequestId': 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX', 
+    'HTTPStatusCode': 200, 
+    'HTTPHeaders': 
+        {'x-amzn-requestid': 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX', 
+        'content-type': 'application/x-amz-json-1.1', 
+        'content-length': '31', 
+        'date': 'Tue, 13 Oct 2020 19:02:08 GMT'}, 
+    'RetryAttempts': 0}}
+\end{code}
+
+\textbf{Be sure to get this working before continuing, but don't worry if you got a message telling you that your account balance is 0 (rather than 10,000.00!).} Apparently, the outcome of this command has changed recent.y If things are {\em not} working, you should see an error message that is very clearly different from the output shown above.
+
+\subsection{If you're using boto3 through R}
+
+In RStudio:
+
+\begin{code}
+library(pyMTurkR)
+getbalance()
+\end{code}
+
+You should get the following output (MTurk sandbox always contains \$10k of fake money):
+\begin{code}
+[$10,000.00]
+\end{code}
+
+If you instead get an error message like the following:
+
+\begin{code}
+Error in py_call_impl(callable, dots$args, dots$keywords): 
+RequestError: An error occurred (RequestError) when calling the GetAccountBalance operation: 
+To use the MTurk API, you will need an Amazon Web Services (AWS) Account. 
+Your AWS account must be linked to your Amazon Mechanical Turk Account. 
+Visit https://requestersandbox.mturk.com/developer to get started.
+     Check your AWS credentials.
+ Error in py_call_impl(callable, dots$args, dots$keywords) :
+  RequestError: An error occurred (RequestError) when calling the GetAccountBalance operation: 
+  To use the MTurk API, you will need an Amazon Web Services (AWS) Account. 
+  Your AWS account must be linked to your Amazon Mechanical Turk Account. 
+  Visit https://requestersandbox.mturk.com/developer to get started.
+\end{code}
+
+This points to some issue with your account setup. PyMTurkR is able to reach your Amazon's IAM (Identity and Access Management) system with your credentials, but either a) your credentials are wrong, or b) you forgot to create a requester sandbox account under Step 1, and/or c) you forgot to link the MTurk requester account to AWS under Step 1.
+
+
+
+
+
+\section{Interacting with MTurk via mturkutils}
+
+There are many ways to interact with MTurk. One convenient way is to use a collection of boto3 script written by former HLP lab manager Andrew Watts. You can get the most recent mturkutils at \url{https://bitbucket.org/hlplab/mturkutils/src/master/}. Alternatively, you might use the R library pyMTurkR. 
+
+This tutorial comes pre-packaged with mturkutils (linked as a \href{https://git-scm.com/book/en/v2/Git-Tools-Submodules}{git submodule}), and we will use it below to upload HIT to MTurk and obtain results from MTurk. The mturkutils scripts can be found in the mturkutils/ folder.  As you can read in the README.md ``The original scripts use the now unsupported boto library. Some scripts have been updated to use the current boto3 and botocore libraries. Originals are in the `boto` directory and updated are in `boto3`. Updated versions also require Python 3.'' We will be using the scripts in the boto3 folder. 
+
+% ADD INSTALLATION INSTRUCTIONS HERE.
+
+%there are seven script (load hit and get results are also used for sandbox with --sandbox flag; result after sandbox).load hit (starts experiments):each list is a HIT with a separate YAML fileall YAML files are in one directory (might not need to be web-facing, Zach says)]script takes one YAML file as input, checks account balance, makes experiment go live, stores a file yaml-filename.success.yaml (Zach wasn't sure whether this output is stored in directory script is called from or directory of YAML input since he runs it from the latter). BE CAREFUL NOT TO OVERWRITE THIS FILE BY RUNNING THE SCRIPT AGAIN.get results (takes as input the output file of starting an experiment: yaml-filename.success.yaml): checks whether finished; gets hit results that are finished and writes them into a result fileget all hits (not used by Zach)approving work (done after completing results)assigning qualifications (you took this experiment; so that you can't take it again)block workersgrant bonuses (unclear whether this has to be done before approving)
+
+To learn more about any of the mturkutils scripts, call the script with the -h tag (``h'' for help). In your terminal, go to the mturkutils/boto3/ folder and try, for example:
+
+\begin{code}
+python loadHIT.boto3.py -h
+\end{code}
+
+Make sure that you are in the mturkutils/boto3/ folder when you run this (or provide the right path). Notice that loadHits.py takes a configuration file (our YAML file), and an optional sandbox tag. \textbf{Unless you're ready for your experiment to go live and pay for it, always make sure to use the sandbox tag! Once a hit is posted to MTurk via boto, it is exceedingly difficult to delete it. And, in any case, you will charged for it.}
+
+
+
+\end{document}
