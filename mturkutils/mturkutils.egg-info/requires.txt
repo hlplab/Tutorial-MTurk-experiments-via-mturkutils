@@ -1,6 +1,0 @@
-boto
-boto3
-unicodecsv
-ruamel.yaml
-six
-xmltodict
