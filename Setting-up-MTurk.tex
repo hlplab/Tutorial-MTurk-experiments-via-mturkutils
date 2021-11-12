@@ -31,6 +31,10 @@
 
 \tableofcontents 
 
+\section{Overview}
+This document walks your through how to set up and use Amazon's Mechanical Turk to conduct web-based experiments. Mechanical Turk (short MTurk) is a crowdsourcing platform that gives you access to hundreds of thousands of potential participants for your experiments. Amazon calls them {\em workers} and calls you, the experimenter, the {\em requester}. Experiments are called {\em Human Intelligence Tasks (HITs)} and individual instances of these HITs that workers can complete are called {\em assignments}. MTurk provides many ready-made templates for experiments that don't require you to run a web server or to do most of the steps in this document. However, if you want to collect information like reaction times, etc. you will have to program your own experiments, put them on a webserver, and download participants' responses from MTurk. This will require you to interact with MTurk through their python-based command line interface called {\em boto3}. There are now shellscripts that simplify this interaction that we will call {\em mturkutils}. This document walks you through all the steps to set up the necessary software environment and online accounts (all of them are free, but you need to pay workers who complete your HIT assignments, and Amazon collects a fee on top of each worker payment). 
+
+
 \section{Set up Mechanical Turk accounts}
 
 If you are not already familiar with Amazon Mechanical Turk, the steps below will help you get started:

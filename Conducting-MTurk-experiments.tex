@@ -33,6 +33,16 @@
 
 Make sure you have completed the tutorial on {\em Setting up Mechanical Turk and boto(3)}. Now that you are familiar with boto(3) and the mturkutils, it is time to get started on your own experiment. This tutorial walks you through how to sandbox your experiment on MTurk's sandbox, how to upload the (thoroughly tested) HIT to MTurk, and how to collect your data once all assignments for the HIT have been completed. This tutorial does {\em not} describe how to program your own experiment.
 
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.9\textwidth]{figures/Visualization\ of\ information\ flow}
+\caption{Overview of how your computer and the web server hosting your experiment interact with each other and Amazon's Mechanical Turk. Each experiment might consist of several {\em HITs} (e.g., because you have multiple lists) typically grouped into a HIT group. Each HIT results in a specified number of {\em assignments} that are available to workers. We will use {\em mturkutils} to read in a YAML file described below tjat specifies the duration, payment, and URL for the HIT assignments as well as the requested number of assignments (via calls to {\em boto3} that provides an interface to MTurk). The same {\em mturkutils} will also be used to download the completed results (using a {\em succcess file} that is generated on the experimenter's computer when we create the HITs) and to store them in a tab-separated file on the experimenter's computer.}\label{fig:overview}
+\label{default}
+\end{center}
+\end{figure}
+
+Figure \ref{fig:overview} provides an overview of the way that your computer and web server will interact with Amazon's MTurk. The rest of the document describes how this interaction is achieved. 
+
 
 \section{Develop and debug your experiment locally}
 
