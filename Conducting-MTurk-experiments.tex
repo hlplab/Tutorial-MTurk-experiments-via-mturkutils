@@ -35,7 +35,7 @@ Make sure you have completed the tutorial on {\em Setting up Mechanical Turk and
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=.9\textwidth]{figures/Visualization\ of\ information\ flow}
+\includegraphics[width=.9\textwidth]{figures/visualization-of-information-flow}
 \caption{Overview of how your computer and the web server hosting your experiment interact with each other and Amazon's Mechanical Turk. Each experiment might consist of several {\em HITs} (e.g., because you have multiple lists) typically grouped into a HIT group. Each HIT results in a specified number of {\em assignments} that are available to workers. We will use {\em mturkutils} to read in a YAML file described below tjat specifies the duration, payment, and URL for the HIT assignments as well as the requested number of assignments (via calls to {\em boto3} that provides an interface to MTurk). The same {\em mturkutils} will also be used to download the completed results (using a {\em succcess file} that is generated on the experimenter's computer when we create the HITs) and to store them in a tab-separated file on the experimenter's computer.}\label{fig:overview}
 \label{default}
 \end{center}
@@ -127,14 +127,14 @@ Congratulations! By this point, you have successfully created a HIT (as a reques
 
 
 \begin{itemize}
-  \item {\bf Download your results from the sandbox}. For example, let's say we have completed a few assignments the example HIT uploaded in the previous section. You can then pull the results from Mechanical Turk's sandbox with {\em mturkutils}: 
+  \item {\bf Download your results from the sandbox}. For example, let's say we have completed a few assignments the example HIT uploaded in the previous section. You can then pull the results from Mechanical Turk's sandbox with {\em mturkutils} (the -p argument is optional if you've been using your default profile when you uploaded the HITs):
 
 \begin{code}
 python getResults.boto3.py -s -f ../hits/example-HIT.success.yaml 
-  -r ../hits/example-HIT.results_120120.tab
+  -r ../hits/example-HIT.results_120120.tab -p SAME_PROFILE_AS_FOR_UPLOADING_HITS
 \end{code}
 
-Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. Thus, \textbf{it's recommended to include the date in the filename of the results file}, as in the code example in this section. Finally, if you uploaded the HIT(s) to sandbox under a specific profile, make sure to include that same profile name when you get the results (again by adding \texttt{-p profile\_name}).
+Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. Thus, \textbf{it's recommended to include the date in the filename of the results file}, as in the code example in this section.
 
   \item \textbf{Parse your results into an interpretable formate}. The output of \texttt{getResults} is a tab-separated values (.tab) file, with one row per completed assignment, and one column for each variable that your experiment returned to Mechanical Turk. This is usually not the format we need for data visualization and analysis. For any non-trivial experiment, this .tab file will also be hardly human readable. Since \textbf{we should carefully check whether the result file contains all the information that we will need later}, the next step is to parse this file into the format we need. This can be done in Python, R, or whatever scripting language you prefer. In R, for example, \texttt{read\_tsv()} from the \texttt{readr} package (part of the \texttt{tidyverse} package) makes reading in tab-separated files easy, and the \texttt{dplyr} package (also part of the \texttt{tidyverse}) helps with wrangling the data into a suitable format.  For example:
   
@@ -311,10 +311,10 @@ Finally, you can use qualifications to prevent anyone who has previously taken a
 
     \item \href{https://docs.aws.amazon.com/AWSMechTurk/latest/RequesterUI/CreatingaQualificationType.html}{Make an arbitrary qualification on the MTurk website}.
 
-    \item Assign that qualification to all subjects who have taken the previous experiments you are worried about. This can be done with assignQual.py. For details, check out:
+    \item Assign that qualification to all subjects who have taken the previous experiments you are worried about. This can be done with assignQual.py. Make sure to use the same profile that you plan to use for your live experiments (\texttt{-p PROFILE}). For details, check out:
 
 \begin{code}
-python assignQual.py -h
+python assignQual.py -h 
 \end{code}
 
     \item In the YAML file for your new experiment add that workers should {\em not} have that qualification. I.e., your YAML file should contains the following lines under the qualifications section:
@@ -398,7 +398,7 @@ A few issues tend to come up in almost every experiment, most of them relating t
    
 
 \subsection{Getting your results}
-Follow the steps described above for getting results from the sandbox except without the \texttt{-s} flag.
+Follow the steps described above for getting results from the sandbox except without the \texttt{-s} flag. Don't forget to {\bf use the same \texttt{-p PROFILE} that you used to upload the results}.
 
 
 \section{Soon after the experiment}
@@ -415,7 +415,7 @@ autoapprovaldelay: 1296000
 However, it’s best to think of the autoapprove as an insurance policy in case you forget. You want the auto-approve interval long enough time to let yourself reject bad actors’ work (if you can)  but you want to approve good work quickly enough that you get good ratings on the turker boards. To pay all the workers contained in a result file, use:
 
 \begin{code}
-python approveWork.boto3.py -r RESULT_FILE -p PROFILE_NAME
+python approveWork.boto3.py -r RESULT_FILE -p SAME_PROFILE_AS_FOR_UPLOADING_HIT
 \end{code}
 
 IRB rules dictate that anyone taking the experiment should be reimbursed. This means you should approve {\em all} workers who have taken your experiment. 
@@ -428,7 +428,7 @@ After reimbursement though you might be interested in excluding participants who
 A word of caution: MTurk has a built-in capability for a Requester to “block” a Worker from working on that Requester’s tasks in the future. Requesters use this capability to identify and exclude Workers that have consistently produced poor quality results on their tasks. \textbf{We strongly urge Requesters to avoid using this feature to exclude Workers for convenience. Doing so could negatively impact the Worker’s reputation in MTurk.}
 \end{quote}
 
-If, after careful consideration, you decide that you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script:
+If, after careful consideration, you decide that you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script. Remember to use the profile that you plan to use later to upload your HITs (\texttt{-p PROFILE}):
 
 \begin{code}
 python blockWorkers.boto3.py -h
@@ -436,7 +436,7 @@ python blockWorkers.boto3.py -h
 
 
 \subsection{Blocking workers from {\em similar} future experiments}
-Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
+Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. Remember to use the profile that you plan to use later to upload your HITs (\texttt{-p PROFILE}). For more details, see:
 
 \begin{code}
 python assignQual.boto3.py -h
