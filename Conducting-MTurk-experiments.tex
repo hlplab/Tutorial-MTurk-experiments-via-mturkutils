@@ -35,13 +35,13 @@ Make sure you have completed the tutorial on {\em Setting up Mechanical Turk and
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=.9\textwidth]{figures/Visualization\ of\ information\ flow}
+\includegraphics[width=.9\textwidth]{figures/visualization-of-information-flow}
 \caption{Overview of how your computer and the web server hosting your experiment interact with each other and Amazon's Mechanical Turk. Each experiment might consist of several {\em HITs} (e.g., because you have multiple lists) typically grouped into a HIT group. Each HIT results in a specified number of {\em assignments} that are available to workers. We will use {\em mturkutils} to read in a YAML file described below tjat specifies the duration, payment, and URL for the HIT assignments as well as the requested number of assignments (via calls to {\em boto3} that provides an interface to MTurk). The same {\em mturkutils} will also be used to download the completed results (using a {\em succcess file} that is generated on the experimenter's computer when we create the HITs) and to store them in a tab-separated file on the experimenter's computer.}\label{fig:overview}
 \label{default}
 \end{center}
 \end{figure}
 
-Figure \ref{fig:overview} provides an overview of the way that your computer and web server will interact with Amazon's MTurk. The rest of the document describes how this interaction is achieved. 
+Figure \ref{fig:overview} provides an overview of the way that your computer and web server will interact with Amazon's MTurk. The rest of the document describes how this interaction is achieved.
 
 
 \section{Develop and debug your experiment locally}
@@ -58,10 +58,10 @@ You can walk through the steps described next using your own experiment, or usin
 
 \begin{itemize}
 
-   \item Using your favorite text editor, check out the contents of example-HIT.yaml in the hits/ folder. This is a YAML configuration file. {\bf YAML configuration files specify the basic information for MTurk HITs} that {\em mturkutils} will use ot upload your HIT(s). This includes the HIT description, the payment, the url that specifies where the experiment is hosted, and more (we'll cover configuration files in a more detail in Section \ref{sec:batchify}). 
-   
+   \item Using your favorite text editor, check out the contents of example-HIT.yaml in the hits/ folder. This is a YAML configuration file. {\bf YAML configuration files specify the basic information for MTurk HITs} that {\em mturkutils} will use ot upload your HIT(s). This includes the HIT description, the payment, the url that specifies where the experiment is hosted, and more (we'll cover configuration files in a more detail in Section \ref{sec:batchify}).
+
    \item Carefully, check the YAML configuration file. This is the moment to check the YAML file you are using for the sandbox, as it likely the blueprint for the YAML file you'll be using once you move from sandbox to production.
-   
+
 \begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Sandbox checklist---{\em before} uploading HIT(s) to sandbox]
   \begin{itemize}
     \item Check whether the payment offered in the experiment matches the experiment offered in the HIT (as specified in the YAML configuration file).
@@ -91,23 +91,23 @@ You can preview your new HIT at:
 \end{code}
 
     You should also notice that a new file (example-HIT.success.yaml) was automatically generated in hits/. Note that this success file will be overwritten everytime you run \texttt{loadHIT} for the same configuration file. While we are in sandbox mode, this does not harm but once the experiment is live this would mean that it will be difficult to manage. \textbf{So make sure {\em not} to delete or overwrite the example-HIT.success.yaml file: you will be using it to collect your results.}
-    
+
     By default {\em mturkutils} will use the AWS credentials specified under your default profile (typically in ~/.aws/credentials). \textbf{If you would like to upload the HITs under an account that requires different AWS credentials}, you can can specify the \texttt{-p profile\_name} tag, where \texttt{profile\_name} should refer to a profile in your AWS credentials file. For example:
-    
+
 \begin{code}
 python loadHIT.boto3.py -s -c ../hits/example-HIT.yaml -p lab
 \end{code}
-    
+
     For this to work, there must be a AWS access key and secret access key below a section called \texttt{[profile\_name]} in your ~/.aws/credentials file. For example, for the above example to work your ~/.aws/credentials file should contain the following lines:
-    
-\begin{code} 
+
+\begin{code}
 [lab]
 # the HLP lab account
 aws_access_key_id = <access key>
 aws_secret_access_key = <secret access key>
 \end{code}
 
-    \item Go to the URL that was output by \texttt{loadHIT} (\url{https://workersandbox.mturk.com/mturk/preview?groupId=some\_long\_ID}, and {\bf complete the HIT} following the considerations described in the next section.  
+    \item Go to the URL that was output by \texttt{loadHIT} (\url{https://workersandbox.mturk.com/mturk/preview?groupId=some\_long\_ID}, and {\bf complete the HIT} following the considerations described in the next section.
 \end{itemize}
 
 
@@ -116,36 +116,36 @@ aws_secret_access_key = <secret access key>
 
 \begin{itemize}
   \item To complete your sandbox HIT, you will need to log into your MTurk sandbox worker account. If you see a website telling you that you do not have permission to access the HIT, log into your worker sandbox account, and then visit the URL again.
-  \item While you are sandboxing your experiment, you should note any issues that come up. \textbf{If your experiment is using Javascript}, it is highly recommended that you watch the Javascript console right from the beginning of the experiment, and keep a record of any errors or notifications that are shown in the console (e.g., for Chrome, right click anywhere on the webpage and select ``Inspect'' from the menu; then select the {\it Console} tab). 
+  \item While you are sandboxing your experiment, you should note any issues that come up. \textbf{If your experiment is using Javascript}, it is highly recommended that you watch the Javascript console right from the beginning of the experiment, and keep a record of any errors or notifications that are shown in the console (e.g., for Chrome, right click anywhere on the webpage and select ``Inspect'' from the menu; then select the {\it Console} tab).
 
 \end{itemize}
 
 
 \section{Obtain and check sandbox results}\label{sec:obtain-sandbox-results}
 
-Congratulations! By this point, you have successfully created a HIT (as a requester) and completed a HIT (as a worker). Now you can obtain and carefully check your results. 
+Congratulations! By this point, you have successfully created a HIT (as a requester) and completed a HIT (as a worker). Now you can obtain and carefully check your results.
 
 
 \begin{itemize}
   \item {\bf Download your results from the sandbox}. For example, let's say we have completed a few assignments the example HIT uploaded in the previous section. You can then pull the results from Mechanical Turk's sandbox with {\em mturkutils} (note that you should {\bf again use the -s flag} if you're getting results from Mechanical Turk's sandbox):
 
 \begin{code}
-python getResults.boto3.py -s -f ../hits/example-HIT.success.yaml 
-  -r ../hits/example-HIT.results_120120.tab
+python getResults.boto3.py -s -f ../hits/example-HIT.success.yaml
+  -r ../hits/example-HIT.results_120120.tab -p SAME_PROFILE_AS_FOR_UPLOADING_HITS
 \end{code}
 
-Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. Thus, \textbf{it's recommended to include the date in the filename of the results file}, as in the code example in this section. Finally, if you uploaded the HIT(s) to sandbox under a specific profile, make sure to include that same profile name when you get the results (again by adding \texttt{-p profile\_name}).
+Note that the result file will be overwritten each time you run \texttt{getResults}---similar to what \texttt{loadHIT} does with the success file. Thus, \textbf{it's recommended to include the date in the filename of the results file}, as in the code example in this section.
 
   \item \textbf{Parse your results into an interpretable formate}. The output of \texttt{getResults} is a tab-separated values (.tab) file, with one row per completed assignment, and one column for each variable that your experiment returned to Mechanical Turk. This is usually not the format we need for data visualization and analysis. For any non-trivial experiment, this .tab file will also be hardly human readable. Since \textbf{we should carefully check whether the result file contains all the information that we will need later}, the next step is to parse this file into the format we need. This can be done in Python, R, or whatever scripting language you prefer. In R, for example, \texttt{read\_tsv()} from the \texttt{readr} package (part of the \texttt{tidyverse} package) makes reading in tab-separated files easy, and the \texttt{dplyr} package (also part of the \texttt{tidyverse}) helps with wrangling the data into a suitable format.  For example:
-  
+
 \begin{code}
 library(tidyverse)
 
 d = read_tsv("PATH_TO_YOUR_RESULT_FILE/YOUR_RESULT_FILE.tab")
 \end{code}
-  
+
   \item Once you have parse your results into a suitable format, it is time to thoroughly check whether the data contains all the information you will need to visualize and analyze your data.
-  
+
 \begin{tcolorbox}[colback=gray!5,colframe=blue!40!black,title=Sandbox checklist---after obtaining results from sandbox]
   \begin{itemize}
     \item Check that the HIT results in data being recorded once the participant (you or your team members) press submit. For example, the experiment might hang.
@@ -285,7 +285,7 @@ More details on \href{https://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI
 \begin{code}
 qualifications:
   builtin:
-   # this is a built-in qualification -- user must be in the United States, 
+   # this is a built-in qualification -- user must be in the United States,
    # but not Hawaii or Alaska
    - qualification: LocaleRequirement
      comparator: EqualTo
@@ -305,13 +305,13 @@ qualifications:
 For an additional price tag per assignment, Amazon offers a \href{https://requester.mturk.com/pricing}{wide range of additional qualifications}, based on workers' self-reported information. This includes demographic information (age, gender, etc.), political orientation, socio-economic status, daily internet usage, and many many more features.
 
 \subsubsection{Custom qualifications}
-Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private/custom qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next. 
+Finally, you can use qualifications to prevent anyone who has previously taken an experiment in the same series from taking another experiment of that type. This \textbf{Note that qualifications made on your production MTurk account are not visible during sandboxing (and vice versa). This will cause error messages if you try to include private/custom qualifications in the YAML file for sandboxing.} The upshot of this is that you will typically have two separate YAML configuration files---one for sandboxing and one for production. Only the latter will contain the additional qualifications described next.
 
 \begin{enumerate}
 
     \item \href{https://docs.aws.amazon.com/AWSMechTurk/latest/RequesterUI/CreatingaQualificationType.html}{Make an arbitrary qualification on the MTurk website}.
 
-    \item Assign that qualification to all subjects who have taken the previous experiments you are worried about. This can be done with assignQual.py. For details, check out:
+    \item Assign that qualification to all subjects who have taken the previous experiments you are worried about. This can be done with assignQual.py. Make sure to use the same profile that you plan to use for your live experiments (\texttt{-p PROFILE}). For details, check out:
 
 \begin{code}
 python assignQual.py -h
@@ -376,14 +376,14 @@ Once you have completed this checklist, you are ready to upload your HIT to MTur
     \item Check progress of your experiment. If nobody is completing assignments for the HIT, it is likely that something went wrong. % more detail here?
     \item Regularly check the email account provided as contact for the experiment for emails from MTurk workers. Workers might run into technical difficulties. If that happens, consider the following questions. The sooner you act, the better your chances to create a bad reputation for the lab, to cause frustration among workers, or to waste money and time:
     \begin{itemize}
-    	\item Is the problem so severe and likely to apply to others that you should abort the experiment? 
-	\item What can be learned from this problem for future experiments? Keep notes in your to-do file that avoid the same problem in future experiments. 
+    	\item Is the problem so severe and likely to apply to others that you should abort the experiment?
+	\item What can be learned from this problem for future experiments? Keep notes in your to-do file that avoid the same problem in future experiments.
 	\item Be responsive to workers concerns and complaints.  See  Section \ref{sec:common-concerns} for a list of common issues that come up during experiments.
 	\item Offer to pay people that have tried to complete a HIT but then ran into technical difficulties (e.g., the computer hung). See Section \ref{sec:pay-incomplete}
    \end{itemize}
 \end{itemize}
 \end{tcolorbox}
-   
+
 \subsection{Common issues, how to avoid, and how to address them}\label{sec:common-concerns}
 
 A few issues tend to come up in almost every experiment, most of them relating to technical difficulties or workers not reading your instructions in the way you intended.
@@ -393,12 +393,13 @@ A few issues tend to come up in almost every experiment, most of them relating t
 	\item A common reason for technical difficulties are browser incompatibilities. What you can do is a) try to use javascript that is robust across browsers and operating systems. Generally basic javascript is better than using packages, though even basic javascript is sometimes interpreted differently across environments; b) test / sandbox your experiment across multiple platforms; c) recognize incompatible browser types in your javascript, and prevent those user from taking your experiment; d) {\bf state clearly in the description of your HIT which browsers and operating systems are acceptable.}
 	\item Workers tend to contact you statig that something didn't work---the experiment froze, they had to reload it, they couldn't submit the HIT. Our first question is usually, please take a screen shot, tell us your browser version and operating system, and (for techincally advanced workers) send us a copy of the console output. However, often that information is not available by the time workers contact you, as they have typically closed that browser window. {\bf It's a good idea to alert workers in your instructions to take screen shots of problems.}
 	\item If you use cookies to prevent workers from taking the experiment twice, that can create confusion, also because some people share the same worker accounts. Our answer to those cases is always that we cannot ascertain that it is not the same individual, and the integrity of our research would not be guaranteed if we allowed the same individual to take the same experiment more than once. I also recommend writing your instructions in such a way that this is very clear.
-	
+
 \end{itemize}
-   
+
 
 \subsection{Getting your results}
-Follow the steps described in Section \ref{sec:obtain-sandbox-results} for getting results from the sandbox {\bf except without the \texttt{-s} flag} (since you're now getting results from Mechanical Turk, rather than Mechanical Turk's sandbox).
+
+Follow the steps described in Section \ref{sec:obtain-sandbox-results} for getting results from the sandbox {\bf except without the \texttt{-s} flag} (since you're now getting results from Mechanical Turk, rather than Mechanical Turk's sandbox). Don't forget to {\bf use the same \texttt{-p PROFILE} that you used to upload the results}.
 
 
 \section{Soon after the experiment}
@@ -415,10 +416,10 @@ autoapprovaldelay: 1296000
 However, it’s best to think of the autoapprove as an insurance policy in case you forget. You want the auto-approve interval long enough time to let yourself reject bad actors’ work (if you can)  but you want to approve good work quickly enough that you get good ratings on the turker boards. To pay all the workers contained in a result file, use:
 
 \begin{code}
-python approveWork.boto3.py -r RESULT_FILE -p PROFILE_NAME
+python approveWork.boto3.py -r RESULT_FILE -p SAME_PROFILE_AS_FOR_UPLOADING_HIT
 \end{code}
 
-IRB rules dictate that anyone taking the experiment should be reimbursed. This means you should approve {\em all} workers who have taken your experiment. 
+IRB rules dictate that anyone taking the experiment should be reimbursed. This means you should approve {\em all} workers who have taken your experiment.
 
 
 \subsection{Blocking workers from {\em any} future experiments}
@@ -428,7 +429,7 @@ After reimbursement though you might be interested in excluding participants who
 A word of caution: MTurk has a built-in capability for a Requester to “block” a Worker from working on that Requester’s tasks in the future. Requesters use this capability to identify and exclude Workers that have consistently produced poor quality results on their tasks. \textbf{We strongly urge Requesters to avoid using this feature to exclude Workers for convenience. Doing so could negatively impact the Worker’s reputation in MTurk.}
 \end{quote}
 
-If, after careful consideration, you decide that you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script:
+If, after careful consideration, you decide that you want to permanently block a worker from {\em all} experiment run through your requester account, you can use the following {\em mturkutils} script. Remember to use the profile that you plan to use later to upload your HITs (\texttt{-p PROFILE}):
 
 \begin{code}
 python blockWorkers.boto3.py -h
@@ -436,7 +437,7 @@ python blockWorkers.boto3.py -h
 
 
 \subsection{Blocking workers from {\em similar} future experiments}
-Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. For more details, see:
+Additionally, you can exclude workers from {\em specific} future experiments. As discussed in Section \ref{sec:private-qualification}, you can create a new private/custom qualification on your MTurk requester account that identifies all participants who have taken your experiment. For that you will need a result file with worker IDs. All of the IDs in that file will be assigned the new qualification. Remember to use the profile that you plan to use later to upload your HITs (\texttt{-p PROFILE}). For more details, see:
 
 \begin{code}
 python assignQual.boto3.py -h
@@ -451,7 +452,7 @@ IRB rules dictate that any participant has the right to abort an experiment at a
 	\item Set up a new qualification through the MTurk requester website (see Section \ref{sec:private-qualification}).
 	\item Assign that qualification to the workers in question. (If you are not sure whether you have already done so, you can  \href{https://requester.mturk.com/workers/download?utf8=\%E2\%9C\%93&check=true}{download a csv file with all workers you've previously run along with all the qualifications you have previously assigned to them} from your MTurk requester account.)
 	\item Make a new HIT that just contains a single question like ``Click this checkbox to get paid and press submit.''
-	\item Send out an email to the worker(s) and tell them to search for that HIT (since one apparently can't directly send links to HITs). 
+	\item Send out an email to the worker(s) and tell them to search for that HIT (since one apparently can't directly send links to HITs).
 \end{itemize}
 
 The following is a screen shot of a HIT description that was used for remuneration.
