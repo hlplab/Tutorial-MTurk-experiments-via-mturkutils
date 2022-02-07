@@ -128,7 +128,7 @@ A JSEXP experiment consist of:
 \end{itemize}
 
 \section{Disabling CORS errors when testing locally}
-If you Javascript is loading external sources like stimulus files or surveys, local testing will result in a CORS error (unless you're running a web server). You can \href{https://medium.com/swlh/avoiding-cors-errors-on-localhost-in-2020-5a656ed8cefa}{avoid CORS Errors on localhost} (in 2020) by starting Chrome the following way (it's important that the last argument contains the full path to the page you'd like to open):
+If you Javascript is loading external sources like stimulus files or surveys, local testing will result in a CORS error (unless you're running a web server). You can \href{https://medium.com/swlh/avoiding-cors-errors-on-localhost-in-2020-5a656ed8cefa}{avoid CORS Errors on localhost} (in 2020) by starting Chrome the following way (it's important that the last argument contains the full path to the page you'd like to open). Note, however, that {\bf this will not actually make Javascript {\em load} those external resources.} It seems to only suppress the error.
 
 \begin{code}
 open -n -a "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security /Users/tiflo/Documents/GitHub/Project1/experiments/series-A/experiment-A.html
