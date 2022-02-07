@@ -142,8 +142,8 @@ JSEXP reads in the URL parameters in the {\em search string} of the URL handed t
 The following is a list of reserved URL parameters that have a fixed interpretation in JSEXP. The values in curly parenthesis list allowed values.
 
 \begin{itemize}
-    \item platform=\{mturk, prolific, proliferate\} Determines the submit method chosen at the end of the experiment. For Prolific and Proliferate, the output is converted into a JSON object that is submitted to Prolific. For Mechanical Turk, the mturk\_form in the HTML file is submitted as is.
-    \item debug. Enter debug mode. This activates all messages, warnings, and errors that JSEXP would otherwise hide, and prints them to the Javascript console of the browser. The debug mode also suppressed the removal of the URL parameters from the URL search string, so that the experimenter can check whether those parameters look correct. Finally, the debug mode causes the script to pause (through a pop-up alert) right before the results are submitted. This allows the experimenter to read exactly what information would be submitted to the crowdsourcing platform.
+    \item platform=\{mturk, prolific, proliferate\} Determines the submit method chosen at the end of the experiment. For Prolific and Proliferate, the output is converted into a JSON object that is submitted to Prolific. For Mechanical Turk, the mturk\_form in the HTML file is submitted as is. (DEFAULT: mturk)
+    \item debug=\{T,TRUE\}. Enter debug mode. This activates all messages, warnings, and errors that JSEXP would otherwise hide, and prints them to the Javascript console of the browser. The debug mode also suppressed the removal of the URL parameters from the URL search string, so that the experimenter can check whether those parameters look correct. Finally, the debug mode causes the script to pause (through a pop-up alert) right before the results are submitted. This allows the experimenter to read exactly what information would be submitted to the crowdsourcing platform. (DEFAULT: no debugging)
  \end{itemize}
 
 
