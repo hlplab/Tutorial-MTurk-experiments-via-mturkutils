@@ -33,20 +33,46 @@
 
 \section{Overview}
 
-Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} and {\em Conducting Mechanical Turk experiments}. This tutorial walks you through how to program your own experiment using {\em \href{https://github.com/hlplab/JSEXP/}{JSEXP}}, which is a collection of Javascript programs originally written by Dave Kleinschmidt and then extended and modified by Zach Burchill, Wednesday Bushong, Esteban Buz, Florian Jaeger, Linda Liu, Xin Xie, and others.
+JSEXP is a collection of Javascript programs to facilitate psychological experiments over the web. It works both for MTurk and for Prolific (via Proliferate). JSEXP let's you define blocks of different tasks (e.g., lexical decision, picture naming, transcription, similarity judgments, etc. and records participants keyboard and mouse responses and reaction times. JSEXP was originally written by Dave Kleinschmidt and then extended and modified by Zach Burchill, Wednesday Bushong, Esteban Buz, Florian Jaeger, Linda Liu, Xin Xie, and others. 
 
+Make sure you have completed the tutorials on {\em Setting up Mechanical Turk} and {\em Conducting Mechanical Turk experiments}. This tutorial walks you through how to program your own experiment using {\em \href{https://github.com/hlplab/JSEXP/}{JSEXP}}.
 
-\section{Disabling CORS errors when testing locally}
-\href{https://medium.com/swlh/avoiding-cors-errors-on-localhost-in-2020-5a656ed8cefa}{Avoiding CORS Errors on Localhost (in 2020)}
+\section{Setup JSEXP}
+Clone \href{https://github.com/hlplab/JSEXP}{JSEXP}. We recommend using \href{https://git-scm.com/book/en/v2/Git-Tools-Submodules}{git submodules} to add JSEXP to your project repository. For example, in your git repo for our projects we typically have a folder called experiments/ with subfolders for each series of experiments, e.g., experiments/series-A/. Consider cloning JSEXP into each of those subfolders.
 
-To disable web security for Chrome, for example:
+This will allow you to pull/push the most recent updates of this package while continuing to develop your experiment-specific code. When you clone a
+project that contains a submodule, remember that you need to also clone the submodule (by default the submodule folder will be cloned but
+not its content). Use:
 
 \begin{code}
-open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir=”/tmp/chrome_dev_test” --disable-web-security
+git clone --recurse-submodules YOUR-PROJECT-URL
 \end{code}
+
+during the cloning to also automatically clone all submodules contained in the project. Once cloned, you can update all submodules in your project by using 
+
+\begin{code}
+git submodule update --remote
+\end{code}
+
+Once updates to a submodule are committed and pushed to your project, you and your collaborators can pull these updates. Make sure to use
+`git pull --recurse-submodules' if you want changes to the submodules not only to be fetched but also to be pulled.
 
 \section{Making your own experiment}
 
+A JSEXP experiment consist of: 
+
+\begin{itemize}
+    \item An HTML file that loads all the necessary Javascript (inc. JSEXP)
+    \item Your experiment-specific Javascript that uses JSEXP functionality.
+    \item the JSEXP/ repo
+    \item Optionally:
+    \begin{itemize}
+	    \item stimulus files
+	    \item list files
+	    \item style (css) files 
+	    \item survey files (for post-experiment surveys)
+    \end{itemize}
+ \end{itemize}
 %current idea for workflow:
 %develop script and test on laptop (localhost; student): select condition, list, etc. through URL parameters
 %test on slate (florian upload:  test on students)
@@ -56,32 +82,26 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 \subsection{What needs to be in the HTML file?}
 
 \begin{itemize}
-    \item A form element that posts the resuls to MTurk when the experiment is done. 
-    % ASK WEDNESDAY WHAT NEEDS TO GO IN HERE.
-    % What is obligatory, what is optional?
+    \item A header with an optional link to a style sheet. In case you plan to run your experiment over Prolific (via Proliferate), the header also needs to load the proliferate javascript.
     
 \begin{code}
-<form id="mturk_form" method="POST" action="https://www.mturk.com/mturk/externalSubmit">
-    <!-- some MTurk specific information -->
-    <textArea id="assignmentId" name="assignmentId" ></textArea><br />
-    <textArea id="practiceResp" name="practiceResp" ></textArea><br />
-    <input type="hidden" id="userAgent" name="userAgent" />
-                
-    <!-- hidden fields for the URL parameters that we want to be stored. -->            
-    <input type="hidden" id="label" name="label" />
-    <input type="hidden" id="condition" name="condition" />
-    <input type="hidden" id="reverse" name="reverse" />
-    <input type="hidden" id="reverse2" name="reverse2" />
-    <input type="hidden" id="list_num" name="list_num" />
+ <head>
+   <meta charset="UTF-8" />
+   <link rel="stylesheet" type="text/css" href="JSEXP/styles/style.css" />
+   <title>Speech perception experiment</title>
+   <script src="https://proliferate.alps.science/static/js/proliferate.js" type="text/javascript"></script>
+</head>
+\end{code}
+
+    \item A form element that posts the results to MTurk when the experiment is done. JSEXP will populate this form with hidden form elements based on a) the URL parameters you provide and b) data collected from the participants.
+    
+\begin{code}
+<form id="mturk_form" method="POST" action="https://www.mturk.com/mturk/externalSubmit">                
     <input id="submitButton" type="submit" name="Submit" value="Submit" />
 </form>
 \end{code}
 
-    \item A link to whatever Javascript code you're using. For example, the example experiment in this tutorial uses js-adapt, a collection 
-    of code originally written by Dave Kleinschmidt, and then extended by Linda Liu, Zach Burchill, Wednesday Bushong, and Xin Xie. That code 
-    provides object definitions for experiments, different types of blocks, stimulus lists, etc. These definitions can then be evokes to 
-    create the specific experiment, like the last line in the following example, in which experiment-A.js would contain the code for the 
-    experiment (code that references code in the other .js files).
+    \item A link to whatever Javascript code you're using. See the example experiments provides as part of this repo.
     
 \begin{code}
 <!-- general javascript, incl. general definitions of objects 
@@ -104,9 +124,27 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 \end{code}
 
     \item Any HTML objects references in the Javascript code. This includes, for example, various <div>s that the Javascript code will
-    fill with content at different points during the experiment. % ASK WEDNESDAY WHETHER THIS IS CORRECT.
+    fill with content at different points during the experiment. 
 \end{itemize}
 
+\section{Disabling CORS errors when testing locally}
+If you Javascript is loading external sources like stimulus files or surveys, local testing will result in a CORS error (unless you're running a web server). You can \href{https://medium.com/swlh/avoiding-cors-errors-on-localhost-in-2020-5a656ed8cefa}{avoid CORS Errors on localhost} (in 2020) by starting Chrome the following way (it's important that the last argument contains the full path to the page you'd like to open):
+
+\begin{code}
+open -n -a "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security /Users/tiflo/Documents/GitHub/Project1/experiments/series-A/experiment-A.html
+\end{code}
+
+
+\section{Calling your own experiment}
+JSEXP reads in the URL parameters in the {\em search string} of the URL handed to the browser. This makes it possible to have one HTML file for many different conditions of your experiment. As soon as the URL parameters are read in, JSEXP removes them from the URL search string (except for the experiment\_id and participant\_id required for Prolific experiments through Proliferate). This avoids that the URL parameters that might, e.g., specify conditions affect participants' behavior. 
+
+\subsection{Reserved URL parameters}
+The following is a list of reserved URL parameters that have a fixed interpretation in JSEXP. The values in curly parenthesis list allowed values.
+
+\begin{itemize}
+    \item platform=\{mturk, prolific, proliferate\} Determines the submit method chosen at the end of the experiment. For Prolific and Proliferate, the output is converted into a JSON object that is submitted to Prolific. For Mechanical Turk, the mturk\_form in the HTML file is submitted as is.
+    \item debug. Enter debug mode. This activates all messages, warnings, and errors that JSEXP would otherwise hide, and prints them to the Javascript console of the browser. The debug mode also suppressed the removal of the URL parameters from the URL search string, so that the experimenter can check whether those parameters look correct. Finally, the debug mode causes the script to pause (through a pop-up alert) right before the results are submitted. This allows the experimenter to read exactly what information would be submitted to the crowdsourcing platform.
+ \end{itemize}
 
 
 \section{Example experiments using {\em JSEXP}}

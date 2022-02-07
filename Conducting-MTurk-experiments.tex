@@ -121,13 +121,13 @@ aws_secret_access_key = <secret access key>
 \end{itemize}
 
 
-\section{Obtain and check sandbox results}
+\section{Obtain and check sandbox results}\label{sec:obtain-sandbox-results}
 
 Congratulations! By this point, you have successfully created a HIT (as a requester) and completed a HIT (as a worker). Now you can obtain and carefully check your results. 
 
 
 \begin{itemize}
-  \item {\bf Download your results from the sandbox}. For example, let's say we have completed a few assignments the example HIT uploaded in the previous section. You can then pull the results from Mechanical Turk's sandbox with {\em mturkutils}: 
+  \item {\bf Download your results from the sandbox}. For example, let's say we have completed a few assignments the example HIT uploaded in the previous section. You can then pull the results from Mechanical Turk's sandbox with {\em mturkutils} (note that you should {\bf again use the -s flag} if you're getting results from Mechanical Turk's sandbox):
 
 \begin{code}
 python getResults.boto3.py -s -f ../hits/example-HIT.success.yaml 
@@ -398,7 +398,7 @@ A few issues tend to come up in almost every experiment, most of them relating t
    
 
 \subsection{Getting your results}
-Follow the steps described above for getting results from the sandbox except without the \texttt{-s} flag.
+Follow the steps described in Section \ref{sec:obtain-sandbox-results} for getting results from the sandbox {\bf except without the \texttt{-s} flag} (since you're now getting results from Mechanical Turk, rather than Mechanical Turk's sandbox).
 
 
 \section{Soon after the experiment}
