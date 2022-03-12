@@ -36,7 +36,7 @@ parser.add_argument('-r', '--resultsfile', required=True, help='Filename of tab 
 parser.add_argument('-s', '--sandbox', action='store_true',
                     help='Run the command in the Mechanical Turk Sandbox (used for testing purposes)')
 parser.add_argument('-p', '--profile',
-                    help='Run commands using specific aws credentials rather the default. To set-up alternative credentials see http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file')
+                    help='Run commands using specific aws credentials rather than the default. To set-up alternative credentials see http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file')
 args = parser.parse_args()
 
 # Only region w/ MTurk endpoint currently is us-east-1
